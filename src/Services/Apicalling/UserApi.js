@@ -5,7 +5,7 @@ import { HeadersApi, userApi } from "../Contexts/Context";
 // get
 export const userGetApiWithPage = async (page) => {
     // const apiLink = `${userapi}?page=${page}&sort=full_name`;
-    const apiLink = `${userApi}?page=${page}`;
+    const apiLink = `${userApi}?page=${page}&limit=12`;
 
     try {
         const response = await axios.get(apiLink, { headers: HeadersApi });

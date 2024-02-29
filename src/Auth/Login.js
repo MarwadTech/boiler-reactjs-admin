@@ -92,7 +92,7 @@ const Login = () => {
         }
         else if (loginData.password.length < 8) {
             setError('password');
-            setMessage('Please Enter 8 digit password');
+            setMessage('Please Enter minimam 8 digit password');
         }
 
         else {

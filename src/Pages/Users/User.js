@@ -12,6 +12,8 @@ import UpdateUserProfile from '../../Dialogs/UserDialogs/UpdateUserProfile'
 import Createnotification from '../../Dialogs/Createnotification'
 import { UserListLoader } from '../../Components/Loaders/UserListLoader'
 
+
+
 const User = () => {
     const [progress, setProgress] = useState(80)
     const navigate = useNavigate();
@@ -78,7 +80,7 @@ const User = () => {
 
             <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} page={page} />
             {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
-            {notificationCreate && <Createnotification setNotificationCreate={setNotificationCreate} action={action} />}
+            {notificationCreate && <Createnotification setNotificationCreate={setNotificationCreate} action={action} type={"user"} />}
             {userEditData && <Edituser setUserEditData={setUserEditData} action={action} fetchData={fetchData} />}
             {userDeleteData && <DeleteUser setUserDeleteData={setUserDeleteData} action={action} fetchData={fetchData} />}
             {userProfileData && <UpdateUserProfile setUserProfileData={setUserProfileData} action={action} fetchData={fetchData} />}
@@ -89,9 +91,6 @@ const User = () => {
                         <div className="col rounded p-1 " >
                             <div className="card color p-2 h-100 ">
                                 <div className='d-flex text-color' >
-                                    {/* <div className='me-1'>
-                                        <img src={e.avatar && e.avatar.pic_large || logo} alt="" width={80} height={80} className=' rounded single-border-color me-1' />
-                                    </div> */}
 
                                     <button className=' m-0 p-0 rounded position-relative single-border-color me-2' onClick={() => updateUserProfile(e)} >
                                         <img src={e.avatar && e.avatar.pic_large || logo} width={80} height={80} alt="profile" className='rounded' />

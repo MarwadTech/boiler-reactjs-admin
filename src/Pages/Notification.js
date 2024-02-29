@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { LoadingTopBar } from '../Components/Loadingbar'
-import { eyeHideIcon, eyeShowIcon, logo } from '../Assets/Index';
+import { eyeHideIcon, eyeShowIcon, logo, notificationSendIcon } from '../Assets/Index';
 import { notificationGetApi } from '../Services/Apicalling/NotificationApi';
 import PaginationButtons from '../Components/PaginationButtons';
 import { OnlineStatusApiCalling } from '../Components/OfflineOnlineIndicator';
 import Errordialog from '../Dialogs/Errordialog';
 import { NotificationListLoader } from '../Components/Loaders/NotificationListLoader';
+import Createnotification from '../Dialogs/Createnotification';
 
 const Notification = () => {
     const [progress, setProgress] = useState(80);
@@ -15,6 +16,7 @@ const Notification = () => {
     const [errorDialog, setErrorDialog] = useState(false)
     const [errorDialogData, setErrorDialogData] = useState({})
     const [isLoading, setIsLoading] = useState(false);
+    const [notificationCreate, setNotificationCreate] = useState(false)
 
 
 
@@ -52,7 +54,9 @@ const Notification = () => {
 
 
 
-
+    const notificationcreatedata = () => {
+        setNotificationCreate(true)
+    }
 
 
 
@@ -61,9 +65,13 @@ const Notification = () => {
     return (
         <>
             <LoadingTopBar Progress={progress} />
-            <div className='my-2'>
-                <h3> Notification</h3>
+            <div className='d-flex justify-content-between flex-wrap my-2'>
+                <h3>Notification</h3>
+                <button type="button" className={`btn btn-outline-primary-emphasis rounded-3 text-color`} onClick={() => notificationcreatedata()}>
+                    <img src={notificationSendIcon} alt="add" className='me-1' />
+                    Send </button>
             </div>
+            {notificationCreate && <Createnotification setNotificationCreate={setNotificationCreate} type={"all"} />}
             {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
             <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} page={page} />
             <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">

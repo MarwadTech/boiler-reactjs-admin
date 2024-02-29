@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LoadingTopBar } from '../Components/Loadingbar';
 import { suggestionsGetApi } from '../Services/Apicalling/HelpAndSupport';
 import PaginationButtons from '../Components/PaginationButtons';
 import { OnlineStatusApiCalling } from '../Components/OfflineOnlineIndicator';
 import Errordialog from '../Dialogs/Errordialog';
 import { HelpAndSupportListLoader } from '../Components/Loaders/HelpAndSupportListLoader';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { deleteIcon } from '../Assets/Index';
 
 const HelpAndSupport = () => {
     const [progress, setProgress] = useState(80);
@@ -39,6 +41,12 @@ const HelpAndSupport = () => {
 
 
 
+
+
+
+
+
+
     return (
         <>
             <LoadingTopBar Progress={progress} />
@@ -47,6 +55,7 @@ const HelpAndSupport = () => {
             </div>
             {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
             <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} page={page} />
+
 
             <div>
                 <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">
@@ -64,12 +73,17 @@ const HelpAndSupport = () => {
                         </div>
                     ))}
                 </div>
-                {isLoading ? (
-                    <HelpAndSupportListLoader />
-                ) : (
-                    meta.total >= 11 && <PaginationButtons meta={meta} page={page} setPage={setPage} />
-                )}
             </div>
+
+
+
+
+            {isLoading ? (
+                <HelpAndSupportListLoader />
+            ) : (
+                meta.total >= 11 && <PaginationButtons meta={meta} page={page} setPage={setPage} />
+            )}
+
         </>
     )
 }

@@ -57,6 +57,10 @@
     width: 300px;
 }
 
+.mw-300 {
+    min-width: 300px;
+}
+
 
 .w-75-100 {
     width: 100%;

@@ -52,10 +52,6 @@ const FeedBack = () => {
                 <h3> Feed Back</h3>
             </div>
             <div>
-
-
-
-
                 {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
                 <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} page={page} />
                 <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">

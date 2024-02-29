@@ -14,6 +14,8 @@ import FeedBack from '../Pages/FeedBack'
 import Notification from '../Pages/Notification'
 import User from '../Pages/Users/User'
 import UserDetails from '../Pages/Users/UserDetails'
+import Reports from '../Pages/Reports'
+import Level from '../Pages/Level'
 
 
 
@@ -29,10 +31,12 @@ const Adminindex = () => {
                             <Route path='/' element={<Dashboard />} />
                             <Route path='/user' element={<User />} />
                             <Route path='/userdetails/:id' element={<UserDetails />} />
+                            <Route path='/level' element={<Level />} />
                             <Route path='/commondata' element={<Commondata />} />
                             <Route path='/notification' element={<Notification />} />
-                            <Route path='/helpandsupport' element={<HelpAndSupport />} />
                             <Route path='/feedback' element={<FeedBack />} />
+                            <Route path='/reports' element={<Reports />} />
+                            <Route path='/helpandsupport' element={<HelpAndSupport />} />
                             <Route path='*' element={<Error />} />
                         </Route>
                         :

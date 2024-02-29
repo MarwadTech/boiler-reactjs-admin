@@ -28,6 +28,9 @@ export const notificationsApi = `${baseApi}/notifications`;
 // HelpAndSupport
 export const suggestionsApi = `${baseApi}/suggestions`;
 
+// reports
+export const reportsApi = `${baseApi}/reports`;
+
 export const HeadersApi = {
     Authorization: `Bearer ${authToken}`,
     'Content-Type': 'application/json',
