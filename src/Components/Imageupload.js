@@ -8,7 +8,8 @@ const Imageupload = ({ defaultimage, error, setError, setMessage, setImgId, clas
     const [img, setImg] = useState(null);
 
     const handleButtonClick = () => {
-        setError()
+        setError('')
+        setMessage('')
         fileInputRef.current.click();
     };
 
@@ -26,24 +27,23 @@ const Imageupload = ({ defaultimage, error, setError, setMessage, setImgId, clas
     }
 
     const Imageuploaded = async () => {
-        try {
-            const postapi = await imagePostApiWithCollection("icon", img);
-            console.log({ postapi });
+        setImgId(168965)
+        setMessage("upload Image successfully");
+        // try {
+        //     const postapi = await imagePostApiWithCollection("icon", img);
 
-            if (postapi.data) {
-                console.log(postapi.data.data.id);
-                setImgId(postapi.data.data.id);
-                setError(false);
-                setMessage(postapi.data.message);
-            } else {
-                setError(true)
-                setMessage("Something went wrong")
-            }
-        } catch (error) {
-            console.log(error);
-            setError(true)
-            setMessage("Something went wrong")
-        }
+        //     if (postapi.data) {
+        //         setImgId(postapi.data.data.id);
+        //         setError(false);
+        //         setMessage(postapi.data.message);
+        //     } else {
+        //         setError(true)
+        //         setMessage("Something went wrong")
+        //     }
+        // } catch (error) {
+        //     setError(true)
+        //     setMessage("Something went wrong")
+        // }
     };
 
     useEffect(() => {
@@ -54,8 +54,8 @@ const Imageupload = ({ defaultimage, error, setError, setMessage, setImgId, clas
 
     return (
         <>
-            <div className={`position-relative  mx-auto border p-1 rounded ${className} ${error && 'border-danger'} `}>
-                <img src={displayImg || defaultimage || logo} alt="Selected" className='w-100' />
+            <div className={`position-relative  mx-auto border p-1 rounded  m-2 ${className} ${error === "img" && 'border-danger'} `}>
+                <img src={displayImg || defaultimage || logo} height={150} alt="Selected" className='w-100 object-fit-contain ' />
                 <div className="position-absolute bottom-0 end-0 cursor-pointer" onClick={handleButtonClick}> <img src={addIcon} alt="add" /></div>
                 <input type="file" accept="image/*" className="form-control d-none" id="addicon" ref={fileInputRef} onChange={handleImageChange} />
 

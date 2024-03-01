@@ -1,14 +1,23 @@
 import axios from "axios";
-import { HeadersApi, commonDatApi, userApi, imagesApi, HeadersFormDataApi } from "../Contexts/Context";
+import { HeadersApi, commonDataApi, userApi, imagesApi, HeadersFormDataApi, categoryApi, levelApi, templateApi } from "../Contexts/Context";
 
 export const deleteApiWithId = async (id, point) => {
     let apiLink;
     switch (point) {
-        case "commondata":
-            apiLink = `${commonDatApi}/${id}`;
-            break;
         case "user":
             apiLink = `${userApi}/${id}`;
+            break;
+        case "commondata":
+            apiLink = `${commonDataApi}/${id}`;
+            break;
+        case "category":
+            apiLink = `${categoryApi}/${id}`;
+            break;
+        case "level":
+            apiLink = `${levelApi}/${id}`;
+            break;
+        case "template":
+            apiLink = `${templateApi}/${id}`;
             break;
         default:
             // Handle default case here if needed

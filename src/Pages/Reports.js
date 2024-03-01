@@ -28,7 +28,6 @@ const Reports = () => {
             setIsLoading(true)
             const result = await reportGetApi(page);
             if (result.data) {
-                console.log(result.data.data.list);
                 setReportList(result.data.data.list)
                 setMeta(result.data.data.meta)
                 setIsLoading(false);
@@ -38,7 +37,6 @@ const Reports = () => {
                 setErrorDialog(true)
             }
         } catch (error) {
-            console.log({ error });
             setErrorDialogData("Something went wrong")
             setErrorDialog(true)
         }

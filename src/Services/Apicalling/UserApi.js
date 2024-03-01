@@ -6,11 +6,21 @@ import { HeadersApi, userApi } from "../Contexts/Context";
 export const userGetApiWithPage = async (page) => {
     // const apiLink = `${userapi}?page=${page}&sort=full_name`;
     const apiLink = `${userApi}?page=${page}&limit=12`;
-
     try {
         const response = await axios.get(apiLink, { headers: HeadersApi });
         return response;
 
+    } catch (error) {
+        return error
+    }
+};
+
+
+export const userGetApiWithId = async (id) => {
+    const apiLink = ` ${userApi}/${id}`;
+    try {
+        const response = await axios.get(apiLink, { headers: HeadersApi });
+        return response;
     } catch (error) {
         return error
     }

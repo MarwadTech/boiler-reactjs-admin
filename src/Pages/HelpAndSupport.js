@@ -29,7 +29,6 @@ const HelpAndSupport = () => {
                 setIsLoading(false);
                 setProgress(100);
             } else {
-                console.log(result);
                 setErrorDialogData(result.response.data);
                 setErrorDialog(true);
             }

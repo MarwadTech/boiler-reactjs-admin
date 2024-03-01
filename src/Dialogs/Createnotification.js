@@ -3,7 +3,7 @@ import { closeIcon } from '../Assets/Index'
 import { imagePostApiWithCollection } from '../Services/Apicalling/CommonApi';
 import { notificationPostApiWithData } from '../Services/Apicalling/NotificationApi';
 
-const Createnotification = ({ setNotificationCreate, action, type }) => {
+const Createnotification = ({ setCreateNotificationDialog, actionData, type }) => {
 
     const [img, setImg] = useState(null);
     const [imgId, setImgId] = useState();
@@ -19,7 +19,7 @@ const Createnotification = ({ setNotificationCreate, action, type }) => {
     const [notificationData, setNotificationData] = useState({
         role: "user",
         image_id: imgId,
-        ...(type === "user" && { users: [action.id] }),
+        ...(type === "user" && { users: [actionData.id] }),
         ...(type === "all" && { users: "" })
     });
 
@@ -49,7 +49,6 @@ const Createnotification = ({ setNotificationCreate, action, type }) => {
                 const postapi = await imagePostApiWithCollection("notification", img);
                 if (postapi.data) {
                     setImgId(postapi.data.data.id);
-                    console.log(postapi.data.data.id);
                     setError(false);
                     setMessage(postapi.data.message);
                 } else {
@@ -78,25 +77,26 @@ const Createnotification = ({ setNotificationCreate, action, type }) => {
         setNotificationData((prevState) => ({ ...prevState, [name]: value }));
     }
 
+    const validateAndSubmit = async () => {
+        try {
+            const postapi = await notificationPostApiWithData(notificationData)
+            if (postapi.data) {
+                setMessage(postapi.data.message)
+                setTimeout(() => {
+                    setCreateNotificationDialog();
+                }, 500)
+            } else if (postapi.response.data.errors) {
+                setError(postapi.response.data.errors[0].key)
+                setMessage(postapi.response.data.errors[0].message)
+            }
+        } catch (error) {
+            setError(true)
+            setMessage("something wesnt wrong")
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const validateAndSubmit = async () => {
-            console.log(notificationData);
-            try {
-                const postapi = await notificationPostApiWithData(notificationData)
-                if (postapi.data) {
-                    setMessage(postapi.data.message)
-                } else if (postapi.response.data.errors) {
-                    setError(postapi.response.data.errors[0].key)
-                    setMessage(postapi.response.data.errors[0].message)
-                }
-            } catch (error) {
-                setError(true)
-                setMessage("something wesnt wrong")
-
-            }
-        }
         if (notificationData.heading.trim() === "") {
             setError('heading');
             setMessage("Please Enter Heading");
@@ -135,7 +135,7 @@ const Createnotification = ({ setNotificationCreate, action, type }) => {
         <div className={`d-flex justify-content-center align-items-center bg-opacity-75 h-100  w-100  position-fixed start-0 top-0 z-2 bg-white `} >
             <div className={`px-4 py-3 shadow rounded mx-3 border-color bg-white`}>
                 <div className='d-flex  justify-content-end'>
-                    <button className='btn btn-link  m-0 py-0 px-0 ' onClick={() => setNotificationCreate()}><img src={closeIcon} alt="close" /></button>
+                    <button className='btn btn-link  m-0 py-0 px-0 ' onClick={() => setCreateNotificationDialog()}><img src={closeIcon} alt="close" /></button>
                 </div>
                 <h3 className='text-center'>Create Notification</h3>
                 <div className="input-group mb-2">
@@ -159,7 +159,7 @@ const Createnotification = ({ setNotificationCreate, action, type }) => {
                     {type === "user" && <div className="form-floating mb-1">
                         <input type="text"
                             className={`form-control focus-ring focus-ring-light text-color`}
-                            id="user" placeholder="user" onChange={handleChange} value={action.full_name} readOnly />
+                            id="user" placeholder="user" onChange={handleChange} value={actionData.full_name} readOnly />
                         <label htmlFor="user" >
                             user
                         </label>

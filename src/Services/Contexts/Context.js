@@ -16,8 +16,14 @@ export const userApi = `${baseApi}/users`;
 // ratings
 export const appRatingsApi = `${baseApi}/ratings/app`;
 
-// commondatapi
-export const commonDatApi = `${baseApi}/commondata`
+// commondataapi
+export const commonDataApi = `${baseApi}/commondata`
+
+// category
+export const categoryApi = `${baseApi}/category`
+
+// level
+export const levelApi = `${baseApi}/level`
 
 // image api
 export const imagesApi = `${baseApi}/images`;
@@ -30,6 +36,9 @@ export const suggestionsApi = `${baseApi}/suggestions`;
 
 // reports
 export const reportsApi = `${baseApi}/reports`;
+
+// reports
+export const templateApi = `${baseApi}/template`;
 
 export const HeadersApi = {
     Authorization: `Bearer ${authToken}`,

@@ -5,6 +5,7 @@ export const colorCode4 = '#1C8CA9'
 export const colorCode5 = '#1F9DBD'
 
 export const logo = require("./Images/react logo.png");
+export const template = require("./Images/template.jpg");
 
 // auth
 export { default as callIcon } from "./Images/ic_call.svg";
@@ -20,6 +21,8 @@ export { default as closeMenuIcon } from "./Images/ic_close_menu.svg";
 export { default as dashboardIcon } from "./Images/ic_dashboard.svg";
 export { default as userIcon } from "./Images/ic_user.svg";
 export { default as levelIcon } from "./Images/ic_level.svg";
+export { default as categoryIcon } from "./Images/ic_category.svg";
+export { default as templateIcon } from "./Images/ic_template.svg";
 export { default as commonDataIcon } from "./Images/ic_common_data.svg";
 export { default as notificationIcon } from "./Images/ic_notification.svg";
 export { default as feedbackIcon } from "./Images/ic_feedback.svg";
@@ -35,6 +38,7 @@ export { default as deleteIcon } from "./Images/ic_delete.svg";
 export { default as closeIcon } from "./Images/ic_close.svg";
 export { default as notificationSendIcon } from "./Images/ic_notification_send.svg";
 export { default as moreIcon } from "./Images/ic_more.svg";
+export { default as actionIcon } from "./Images/ic_action.svg";
 
 export { default as globeIcon } from "./Images/ic_globe.svg";
 

@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { deleteApiWithId } from '../../Services/Apicalling/CommonApi'
 
-const Deletecommondata = ({ commonData, setCommonDataDelete, fetchData }) => {
+const Deletecommondata = ({ actionData, setDeleteCommonDataDialog, fetchData }) => {
     const [error, setError] = useState('')
     const [message, setMessage] = useState('')
     const Commondatadelete = async () => {
         try {
-            const deleteApi = await deleteApiWithId(commonData.id, "commondata");
+            const deleteApi = await deleteApiWithId(actionData.id, "commondata");
             if (deleteApi.data) {
                 setMessage(deleteApi.data.message);
                 setTimeout(() => {
-                    setCommonDataDelete()
+                    setDeleteCommonDataDialog()
                     fetchData()
                 }, 500)
             } else {
@@ -33,15 +33,15 @@ const Deletecommondata = ({ commonData, setCommonDataDelete, fetchData }) => {
                 <h4>Delete Common Data</h4>
                 <p>Are you sure </p>
                 <p className='m-0'><b>Key</b></p>
-                <p className=' flex-wrap overflow-x-scroll'>{commonData.key}</p>
+                <p className=' flex-wrap overflow-x-scroll'>{actionData.key}</p>
                 <p className='m-0'><b>Data</b></p>
-                <p className=' flex-wrap overflow-x-scroll'>{commonData.data}</p>
+                <p className=' flex-wrap overflow-x-scroll'>{actionData.data}</p>
                 <div>
                 </div>
                 <p>is Deleted</p>
                 <p className={`${error ? 'text-danger' : 'text-success'} `}>{message}</p>
                 <div className='d-flex justify-content-end  '>
-                    <button className={`btn  btn-outline-primary-emphasis me-3 text-color `} onClick={() => setCommonDataDelete()}>NO</button>
+                    <button className={`btn  btn-outline-primary-emphasis me-3 text-color `} onClick={() => setDeleteCommonDataDialog()}>NO</button>
 
                     <button className="buttons" onClick={() => Commondatadelete()}>YES</button>
                 </div>

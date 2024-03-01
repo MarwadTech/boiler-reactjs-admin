@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { bookIcon, certificateIcon, colorCode, commonDataIcon, dashboardIcon, feedbackIcon, heplAndSupportIcon, levelIcon, logo, logoutIcon, notificationIcon, placeIcon, privacyPolicyIcon, reportIcon, termAndConditionIcon, userIcon } from '../Assets/Index';
+import { categoryIcon, colorCode, commonDataIcon, dashboardIcon, feedbackIcon, heplAndSupportIcon, levelIcon, logo, logoutIcon, notificationIcon, privacyPolicyIcon, reportIcon, templateIcon, termAndConditionIcon, userIcon } from '../Assets/Index';
 import Logout from '../Dialogs/Logout';
 
 
@@ -9,6 +9,8 @@ const menuItems = [
     { to: "/", icon: dashboardIcon, title: "Dashboard" },
     { to: "/user", icon: userIcon, title: "User" },
     { to: "/level", icon: levelIcon, title: "Level" },
+    { to: "/category", icon: categoryIcon, title: "Category" },
+    { to: "/template", icon: templateIcon, title: "Template" },
     { to: "/commondata", icon: commonDataIcon, title: "Common Data" },
     { to: "/notification", icon: notificationIcon, title: "Notification" },
     { to: "/feedback", icon: feedbackIcon, title: "Feed Back" },

@@ -1,40 +1,50 @@
 import React, { useState } from 'react'
 import { closeIcon } from '../../Assets/Index';
+import { lecelPatchApiWithData } from '../../Services/Apicalling/LovelApi';
 
-const EditLevel = ({ setEditLevelDialog, activeData }) => {
+const EditLevel = ({ setEditLevelDialog, actionData, fetchData }) => {
 
     const [error, setError] = useState('')
     const [message, setMessage] = useState('')
-    const [levelData, setLevelData] = useState({})
-
-
-
+    const [updatelevelData, setUpdateLevelData] = useState({})
 
     const handleChange = (e) => {
         setError('')
         setMessage('')
         const { name, value } = e.target
-        setLevelData((prevState) => ({ ...prevState, [name]: value }));
+        setUpdateLevelData((prevState) => ({ ...prevState, [name]: value }));
     }
+
+    const validateAndSubmit = async () => {
+        try {
+            const addApi = await lecelPatchApiWithData(updatelevelData);
+            if (addApi.data) {
+                setMessage(addApi.data.message)
+                setTimeout(() => {
+                    setEditLevelDialog()
+                    fetchData()
+                }, 500)
+            }
+            else if (addApi.response.data.errors) {
+                setError(addApi.response.data.errors[0].key)
+                setMessage(addApi.response.data.errors[0].message)
+            }
+        } catch (error) {
+            setError(true)
+            setMessage("something wesnt wrong")
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        const validateAndSubmit = async () => {
-            console.log({ levelData });
-            setMessage("Level Update successfully")
-            setTimeout(() => {
-                setEditLevelDialog()
-            }, 500)
-        };
-
-        if (Object.keys(levelData).length === 0) {
+        if (Object.keys(updatelevelData).length === 0) {
             setError(true);
             setMessage("Please update at least one field");
-        } else if (!levelData.title && levelData.title === "") {
+        } else if (!updatelevelData.title && updatelevelData.title === "") {
             setError('title');
             setMessage("Please Enter title");
         }
-        else if (/ \s/.test(levelData.title)) {
+        else if (/ \s/.test(updatelevelData.title)) {
             setError('title');
             setMessage("Please remove extra spaces");
         }
@@ -42,18 +52,6 @@ const EditLevel = ({ setEditLevelDialog, activeData }) => {
             validateAndSubmit();
         }
     };
-
-
-
-
-
-
-
-
-
-
-
-
 
     return (
         <div className={`d-flex justify-content-center align-items-center bg-opacity-75 h-100  w-100  position-fixed start-0 top-0 z-2 bg-white `} >
@@ -66,19 +64,19 @@ const EditLevel = ({ setEditLevelDialog, activeData }) => {
                     <div className="form-floating mb-1">
                         <input type="number"
                             className={`form-control focus-ring focus-ring-light text-color ${error === 'level' && 'border-danger'}`}
-                            id="level" placeholder="Level" name='level' onChange={handleChange} defaultValue={activeData.level} required />
+                            id="level" placeholder="Level" name='level' onChange={handleChange} defaultValue={actionData.level} required />
                         <label htmlFor="level">Level</label>
                     </div>
                     <div className="form-floating mb-1">
                         <input type="text"
                             className={`form-control focus-ring focus-ring-light text-color ${error === 'title' && 'border-danger'}`}
-                            id="title" placeholder="Title" name='title' onChange={handleChange} defaultValue={activeData.title} required />
+                            id="title" placeholder="Title" name='title' onChange={handleChange} defaultValue={actionData.title} required />
                         <label htmlFor="title">Title</label>
                     </div>
                     <div className="form-floating mb-1">
                         <input type="number"
                             className={`form-control focus-ring focus-ring-light text-color ${error === 'percentage' && 'border-danger'}`}
-                            id="percentage" placeholder="Percentage" name='percentage' onChange={handleChange} defaultValue={activeData.percentage} onKeyDown={(e) => {
+                            id="percentage" placeholder="Percentage" name='percentage' onChange={handleChange} defaultValue={actionData.percentage} onKeyDown={(e) => {
                                 if (e.target.value.length >= 3 && e.key !== 'Backspace' && e.key !== 'Delete') {
                                     e.preventDefault();
                                 }

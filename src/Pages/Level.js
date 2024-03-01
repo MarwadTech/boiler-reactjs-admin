@@ -1,25 +1,35 @@
 import React, { useState } from 'react'
 import { LoadingTopBar } from '../Components/Loadingbar'
 
-import { RadioButton } from '../Dialogs/CommonDataDialogs/RadioButton'
+import { RadioButton } from '../Components/RadioButton'
 import { addIcon, deleteIcon, editIcon } from '../Assets/Index';
 import AddLevel from '../Dialogs/LevelDialogs/AddLevel';
 import EditLevel from '../Dialogs/LevelDialogs/EditLevel';
 import DeleteLevel from '../Dialogs/LevelDialogs/DeleteLevel';
 import { HelpAndSupportListLoader } from '../Components/Loaders/HelpAndSupportListLoader';
+import { lecelGetApi } from '../Services/Apicalling/LovelApi';
+import { OnlineStatusApiCalling } from '../Components/OfflineOnlineIndicator';
+import Errordialog from '../Dialogs/Errordialog';
 
 
 const Level = () => {
     const [progress, setProgress] = useState(80);
-    const labels = ["request", "track"];
-    const [active, setActive] = useState("request");
+    const [actionData, setActionData] = useState();
+    const [levelList, setLevelList] = useState([])
+
+    const [errorDialogData, setErrorDialogData] = useState({})
+    const [errorDialog, setErrorDialog] = useState(false)
+
+    const [isLoading, setIsLoading] = useState(false)
+
     const [addLevelDialog, setAddLevelDialog] = useState(false)
     const [editLevelDialog, setEditLevelDialog] = useState(false)
     const [deleteLevelDialog, setDeleteLevelDialog] = useState(false)
-    const [activeData, setActiveData] = useState()
-    const [isLoading, setIsLoading] = useState(false)
 
-    const [levelList, setLevelList] = useState([
+    const labels = ["request", "track"];
+    const [activeData, setActiveData] = useState("request")
+
+    const [levelListDu, setLevelListDu] = useState([
         {
             "id": "750f45a86feb44aeb7c5b1f96e836308",
             "level": 1,
@@ -117,20 +127,42 @@ const Level = () => {
         }
     ],)
 
-
-    const editLevel = (data) => {
-        setEditLevelDialog(true)
-        setActiveData(data)
+    const action = (type, data) => {
+        setActionData(data)
+        switch (type) {
+            case 'add':
+                setAddLevelDialog(true);
+                break;
+            case 'delete':
+                setDeleteLevelDialog(true);
+                break;
+            case 'edit':
+                setEditLevelDialog(true);
+                break;
+            default:
+                // Handle the default case if necessary
+                break;
+        }
 
     }
-    const deleteLevel = (data) => {
-        setDeleteLevelDialog(true)
-        setActiveData(data)
 
-    }
-
-    const fetchData = () => {
-        setIsLoading(true)
+    const fetchData = async () => {
+        try {
+            setIsLoading(true)
+            const result = await lecelGetApi();
+            if (result.data) {
+                setLevelList(result.data.data)
+                setProgress(100)
+                setIsLoading(false)
+            }
+            else {
+                setErrorDialog(true)
+                setErrorDialogData(result.response.data)
+            }
+        } catch (error) {
+            setErrorDialog(true)
+            setErrorDialogData("Something went wrong")
+        }
     }
 
     return (
@@ -138,29 +170,30 @@ const Level = () => {
             <LoadingTopBar Progress={progress} />
             <div className='d-flex justify-content-between flex-wrap my-2'>
                 <h3>Level</h3>
-                <button type="button" className={`btn btn-outline-primary-emphasis rounded-3 text-color`} onClick={() => setAddLevelDialog(true)}>
+                <button type="button" className={`btn btn-outline-primary-emphasis rounded-3 text-color`} onClick={() => action("add")}>
                     <img src={addIcon} alt="add" className='me-1' />
                     Level </button>
             </div>
             <div>
+                {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
+                {/* <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} /> */}
 
-
-                {addLevelDialog && <AddLevel setAddLevelDialog={setAddLevelDialog} />}
-                {editLevelDialog && <EditLevel setEditLevelDialog={setEditLevelDialog} activeData={activeData} />}
-                {deleteLevelDialog && <DeleteLevel setDeleteLevelDialog={setDeleteLevelDialog} activeData={activeData} />}
+                {addLevelDialog && <AddLevel setAddLevelDialog={setAddLevelDialog} fetchData={fetchData} />}
+                {editLevelDialog && <EditLevel setEditLevelDialog={setEditLevelDialog} actionData={actionData} fetchData={fetchData} />}
+                {deleteLevelDialog && <DeleteLevel setDeleteLevelDialog={setDeleteLevelDialog} actionData={actionData} fetchData={fetchData} />}
 
                 <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">
-                    {levelList.map((e) => (
+                    {levelListDu.map((e) => (
                         <div className="col rounded p-1 " >
                             <div className="card color p-2 px-3 h-100 ">
                                 <div className='text-color'>
                                     <div className='d-flex justify-content-between align-items-center'>
                                         <p className='m-0'><b>Lever </b> {e.level}</p>
                                         <div>
-                                            <button type="button" className={`btnlink rounded-3 p-1 me-2`} onClick={() => editLevel(e)}>
+                                            <button type="button" className={`btnlink rounded-3 p-1 me-2`} onClick={() => action("edit", e)}>
                                                 <img src={editIcon} alt="edit" />
                                             </button>
-                                            <button type="button" className={`btnlink rounded-3 p-1 `} onClick={() => deleteLevel(e)}>
+                                            <button type="button" className={`btnlink rounded-3 p-1 `} onClick={() => action("delete", e)}>
                                                 <img src={deleteIcon} alt="delete" />
                                             </button>
                                         </div>
@@ -177,25 +210,17 @@ const Level = () => {
                     ))}
 
                 </div>
-
-
-
-
-
-
-
-
                 <div className="d-flex redio-button m-auto text-center my-4">
                     {labels.map((label) => (
                         <RadioButton
                             key={label}
-                            active={active} // Pass active state to each RadioButton
-                            setActive={setActive} // Pass setActive function to each RadioButton
+                            active={activeData} // Pass active state to each RadioButton
+                            setActive={setActiveData} // Pass setActive function to each RadioButton
                             label={label} // Pass label to each RadioButton
                         />
                     ))}
                 </div>
-                <p>{active}</p>
+                <p>{activeData}</p>
 
 
 

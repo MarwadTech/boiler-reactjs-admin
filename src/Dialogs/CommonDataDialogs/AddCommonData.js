@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { closeIcon } from '../../Assets/Index'
 import { commonDataPostApiWithData } from '../../Services/Apicalling/CommonDataApi'
 
-const Addcommondata = ({ setCommonDataAdd, fetchData }) => {
+const Addcommondata = ({ setAddCommonDataDialog, fetchData }) => {
     const [error, setError] = useState('')
     const [message, setMessage] = useState('')
     const [commonData, setCommonData] = useState()
@@ -13,28 +13,29 @@ const Addcommondata = ({ setCommonDataAdd, fetchData }) => {
         setCommonData((prevState) => ({ ...prevState, [name]: value }));
 
     }
+
+    const validateAndSubmit = async () => {
+        try {
+            const addApi = await commonDataPostApiWithData(commonData);
+            if (addApi.data && addApi.data.success) {
+                setMessage(addApi.data.message)
+                setTimeout(() => {
+                    setAddCommonDataDialog()
+                    fetchData()
+                }, 500)
+            }
+            else if (addApi.response.data.errors) {
+                setError(addApi.response.data.errors[0].key)
+                setMessage(addApi.response.data.errors[0].message)
+            }
+        } catch (error) {
+            setError(true)
+            setMessage("something wesnt wrong")
+        }
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const validateAndSubmit = async () => {
-            try {
-                const addApi = await commonDataPostApiWithData(commonData);
-                if (addApi.data && addApi.data.success) {
-                    setMessage(addApi.data.message)
-                    setTimeout(() => {
-                        setCommonDataAdd()
-                        fetchData()
-                    }, 500)
-                }
-                else if (addApi.response.data.errors) {
-                    setError(addApi.response.data.errors[0].key)
-                    setMessage(addApi.response.data.errors[0].message)
-                }
-            } catch (error) {
-                setError(true)
-                setMessage("something wesnt wrong")
-            }
-        }
-
         if (commonData.key.trim() === "") {
             setError('key');
             setMessage("Please Enter Key");
@@ -64,7 +65,7 @@ const Addcommondata = ({ setCommonDataAdd, fetchData }) => {
         <div className={`d-flex justify-content-center align-items-center bg-opacity-75 h-100  w-100  position-fixed start-0 top-0 z-2 bg-white `} >
             <div className={`px-4 py-3 shadow rounded w-300 border-color bg-white`}>
                 <div className='d-flex  justify-content-end'>
-                    <button className='btn btn-link  m-0 py-0 px-0 ' onClick={() => setCommonDataAdd()}><img src={closeIcon} alt="close" /></button>
+                    <button className='btn btn-link  m-0 py-0 px-0 ' onClick={() => setAddCommonDataDialog()}><img src={closeIcon} alt="close" /></button>
                 </div>
                 <h4 className='text-center  mb-4'>Add Common Data</h4>
                 <form onSubmit={handleSubmit}>

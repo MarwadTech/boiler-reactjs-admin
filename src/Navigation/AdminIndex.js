@@ -16,6 +16,8 @@ import User from '../Pages/Users/User'
 import UserDetails from '../Pages/Users/UserDetails'
 import Reports from '../Pages/Reports'
 import Level from '../Pages/Level'
+import Template from '../Pages/Template'
+import Category from '../Pages/Category'
 
 
 
@@ -32,6 +34,8 @@ const Adminindex = () => {
                             <Route path='/user' element={<User />} />
                             <Route path='/userdetails/:id' element={<UserDetails />} />
                             <Route path='/level' element={<Level />} />
+                            <Route path='/category' element={<Category />} />
+                            <Route path='/template' element={<Template />} />
                             <Route path='/commondata' element={<Commondata />} />
                             <Route path='/notification' element={<Notification />} />
                             <Route path='/feedback' element={<FeedBack />} />

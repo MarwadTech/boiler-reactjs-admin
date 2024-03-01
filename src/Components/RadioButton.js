@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { colorCode } from "../../Assets/Index";
+import { colorCode } from "../Assets/Index";
 
 export const RadioButton = ({ label, active, setActive }) => {
     const [stateLabel] = useState(label); // Removed unnecessary state

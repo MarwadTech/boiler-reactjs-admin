@@ -14,17 +14,49 @@ const Commondata = () => {
     const [progress, setProgress] = useState(80);
     const [commonDataList, setCommonDataList] = useState([])
     const [commonData, setCommonData] = useState()
-    const [commonDataAdd, setCommonDataAdd] = useState(false);
-    const [commonDataDelete, setCommonDataDelete] = useState(false);
-    const [commonDataEdit, setCommonDataEdit] = useState(false);
+    const [addCommonDataDialog, setAddCommonDataDialog] = useState(false);
+    const [deleteCommonDataDialog, setDeleteCommonDataDialog] = useState(false);
+    const [editCommonDataDialog, setEditCommonDataDialog] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
+
+    const [actionData, setActionData] = useState();
+
+
+
+    const action = (type, data) => {
+        setActionData(data)
+        switch (type) {
+            case 'add':
+                setAddCommonDataDialog(true);
+                break;
+            case 'delete':
+                setDeleteCommonDataDialog(true);
+                break;
+            case 'edit':
+                setEditCommonDataDialog(true);
+                break;
+            default:
+                // Handle the default case if necessary
+                break;
+        }
+
+    }
+
+
+
+
+
+
+
+
+
 
     const fetchData = async () => {
         try {
             setIsLoading(true)
             const result = await commonDataGetApi();
             if (result.data) {
-                setCommonDataList(result.data)
+                setCommonDataList(result.data.data)
                 setProgress(100)
                 setIsLoading(false)
             }
@@ -38,34 +70,22 @@ const Commondata = () => {
         }
     };
 
-    // useEffect(() => {
-    //     fetchData()
-    // }, [])
-
-    const deletetData = (data) => {
-        setCommonDataDelete(true)
-        setCommonData(data)
-    }
-    const editData = (data) => {
-        setCommonDataEdit(true)
-        setCommonData(data)
-    }
 
     return (
         <>
             <LoadingTopBar Progress={progress} />
             <div className='d-flex justify-content-between flex-wrap my-2'>
                 <h3> Common Data</h3>
-                <button type="button" onClick={() => setCommonDataAdd(true)} className={`btn btn-outline-primary-emphasis rounded-3 text-color`}>
+                <button type="button" onClick={() => action("add")} className={`btn btn-outline-primary-emphasis rounded-3 text-color`}>
                     <img src={addIcon} alt="add" className='me-1' />
                     Add </button>
             </div>
 
             <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} />
             {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
-            {commonDataAdd && <Addcommondata setCommonDataAdd={setCommonDataAdd} fetchData={fetchData} />}
-            {commonDataDelete && <Deletecommondata setCommonDataDelete={setCommonDataDelete} commonData={commonData} fetchData={fetchData} />}
-            {commonDataEdit && <Editcommondata setCommonDataEdit={setCommonDataEdit} commonData={commonData} fetchData={fetchData} />}
+            {addCommonDataDialog && <Addcommondata setAddCommonDataDialog={setAddCommonDataDialog} fetchData={fetchData} />}
+            {deleteCommonDataDialog && <Deletecommondata setDeleteCommonDataDialog={setDeleteCommonDataDialog} actionData={actionData} fetchData={fetchData} />}
+            {editCommonDataDialog && <Editcommondata setEditCommonDataDialog={setEditCommonDataDialog} actionData={actionData} fetchData={fetchData} />}
             <div>
                 <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">
                     {commonDataList.map((e) => (
@@ -75,10 +95,10 @@ const Commondata = () => {
                                     <div className='d-flex justify-content-between align-items-center'>
                                         <p className='m-0'><b>Key</b></p>
                                         <div>
-                                            <button type="button" className={`btnlink rounded-3 p-1 me-2`} onClick={() => editData(e)}>
+                                            <button type="button" className={`btnlink rounded-3 p-1 me-2`} onClick={() => action("edit", e)}>
                                                 <img src={editIcon} alt="edit" />
                                             </button>
-                                            <button type="button" className={`btnlink rounded-3 p-1 `} onClick={() => deletetData(e)} >
+                                            <button type="button" className={`btnlink rounded-3 p-1 `} onClick={() => action("delete", e)} >
                                                 <img src={deleteIcon} alt="delete" />
                                             </button>
                                         </div>
@@ -93,7 +113,7 @@ const Commondata = () => {
 
                 </div>
                 {isLoading && <HelpAndSupportListLoader />}
-            </div>
+            </div >
         </>
     )
 }

@@ -1,57 +1,52 @@
 import React, { useState } from 'react'
 import { closeIcon } from '../../Assets/Index'
+import { lecelPostApiWithData } from '../../Services/Apicalling/LovelApi'
 
-const AddLevel = ({ setAddLevelDialog }) => {
+const AddLevel = ({ setAddLevelDialog, fetchData }) => {
     const [error, setError] = useState('')
     const [message, setMessage] = useState('')
-    const [levelData, setLevelData] = useState()
+    const [newlevelData, setNewLevelData] = useState({})
 
     const handleChange = (e) => {
         setError('')
         setMessage('')
         const { name, value } = e.target
-        setLevelData((prevState) => ({ ...prevState, [name]: value }));
+        setNewLevelData((prevState) => ({ ...prevState, [name]: value }));
     }
+
+    const validateAndSubmit = async () => {
+        try {
+            const addApi = await lecelPostApiWithData(newlevelData);
+            if (addApi.data && addApi.data.success) {
+                setMessage(addApi.data.message)
+                setTimeout(() => {
+                    setAddLevelDialog()
+                    fetchData()
+                }, 500)
+            }
+            else if (addApi.response.data.errors) {
+                setError(addApi.response.data.errors[0].key)
+                setMessage(addApi.response.data.errors[0].message)
+            }
+        } catch (error) {
+            setError(true)
+            setMessage("something wesnt wrong")
+        }
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        const validateAndSubmit = async () => {
-            console.log({ levelData });
-            setMessage("Level Created successfully")
-            setTimeout(() => {
-                setAddLevelDialog()
-            }, 500)
-        }
-
-        if (levelData.title === "") {
+        if (newlevelData.title === "") {
             setError('title');
             setMessage("Please Enter title");
         }
-        else if (/ \s/.test(levelData.title)) {
+        else if (/ \s/.test(newlevelData.title)) {
             setError('title');
             setMessage("Please remove extra spaces");
         }
-
         else {
             validateAndSubmit();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     return (

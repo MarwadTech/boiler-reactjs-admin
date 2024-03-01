@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { closeIcon, } from '../../Assets/Index';
 import Imageupload from '../../Components/Imageupload';
+import { userPutApiWithIdDate } from '../../Services/Apicalling/UserApi';
 
-const UpdateUserProfile = ({ action, setUserProfileData }) => {
+const UpdateUserProfile = ({ actionData, setProfileUpdateDialog, fetchData }) => {
 
 
     const [imgId, setImgId] = useState()
@@ -23,12 +24,27 @@ const UpdateUserProfile = ({ action, setUserProfileData }) => {
 
 
 
-    const handleupdataprofile = () => {
-        console.log(postImgId);
+    const handleupdataprofile = async () => {
+        try {
+            const updateApi = await userPutApiWithIdDate(actionData.id, postImgId);
+            if (updateApi.data) {
+                setMessage(updateApi.data.message);
+                setTimeout(() => {
+                    setProfileUpdateDialog();
+                    fetchData();
+                }, 500)
 
+            } else {
+                setError(true)
+                setMessage("something went wrong")
+            }
+        } catch (error) {
+            setError(true)
+            setMessage("something went wrong")
+
+        }
     }
 
-    console.log({ postImgId, imgId });
 
 
 
@@ -39,12 +55,12 @@ const UpdateUserProfile = ({ action, setUserProfileData }) => {
             <div className={`px-4 py-3   shadow rounded w-300  bg-white color border-color`}>
                 {/* Close button */}
                 <div className='d-flex justify-content-end'>
-                    <button className='btn btn-link text-dark m-0 py-0 px-0' onClick={() => setUserProfileData()}><img src={closeIcon} alt="close" /></button>
+                    <button className='btn btn-link text-dark m-0 py-0 px-0' onClick={() => setProfileUpdateDialog()}><img src={closeIcon} alt="close" /></button>
                 </div>
                 <h3 className='text-center mb-4'>Update Profile</h3>
 
 
-                <Imageupload className={"w-50"} defaultimage={action.avatar && action.avatar.pic_large} error={error} setError={setError} setMessage={setMessage} setImgId={setImgId} />
+                <Imageupload className={"w-50"} defaultimage={actionData.avatar && actionData.avatar.pic_large} error={error} setError={setError} setMessage={setMessage} setImgId={setImgId} />
 
 
                 <p className={`${error ? 'text-danger' : 'text-success'} m-1`}>{message}</p>

@@ -1,9 +1,9 @@
 import axios from "axios";
-import { HeadersApi, commonDataApi } from "../Contexts/Context";
+import { HeadersApi, levelApi } from "../Contexts/Context";
 // get
-export const commonDataGetApi = async () => {
+export const lecelGetApi = async () => {
 
-    const apiLink = `${commonDataApi}`;
+    const apiLink = `${levelApi}`;
     try {
         const response = await axios.get(apiLink, { headers: HeadersApi });
         return response;
@@ -12,9 +12,10 @@ export const commonDataGetApi = async () => {
     }
 }
 
-// Add common data
-export const commonDataPostApiWithData = async (data) => {
-    const apiLink = `${commonDataApi}`;
+
+// Add  
+export const lecelPostApiWithData = async (data) => {
+    const apiLink = `${levelApi}`;
     try {
         const response = await axios.post(apiLink, data, { headers: HeadersApi });
         return response
@@ -24,9 +25,9 @@ export const commonDataPostApiWithData = async (data) => {
 }
 
 
-// Edit common data
-export const commonDataPatchApiWithData = async (id, data) => {
-    const apiLink = `${commonDataApi}/${id}`;
+// Edit 
+export const lecelPatchApiWithData = async (id, data) => {
+    const apiLink = `${levelApi}/${id}`;
     try {
         const response = await axios.patch(apiLink, data, { headers: HeadersApi });
         return response

@@ -1,9 +1,9 @@
 import axios from "axios";
-import { HeadersApi, commonDataApi } from "../Contexts/Context";
+import { HeadersApi, categoryApi } from "../Contexts/Context";
 // get
-export const commonDataGetApi = async () => {
+export const categoryGetApi = async () => {
 
-    const apiLink = `${commonDataApi}`;
+    const apiLink = `${categoryApi}`;
     try {
         const response = await axios.get(apiLink, { headers: HeadersApi });
         return response;
@@ -12,9 +12,9 @@ export const commonDataGetApi = async () => {
     }
 }
 
-// Add common data
-export const commonDataPostApiWithData = async (data) => {
-    const apiLink = `${commonDataApi}`;
+// Add category
+export const categoryPostApiWithData = async (data) => {
+    const apiLink = `${categoryApi}`;
     try {
         const response = await axios.post(apiLink, data, { headers: HeadersApi });
         return response
@@ -24,9 +24,9 @@ export const commonDataPostApiWithData = async (data) => {
 }
 
 
-// Edit common data
-export const commonDataPatchApiWithData = async (id, data) => {
-    const apiLink = `${commonDataApi}/${id}`;
+// Edit category
+export const categoryPatchApiWithData = async (id, data) => {
+    const apiLink = `${categoryApi}/${id}`;
     try {
         const response = await axios.patch(apiLink, data, { headers: HeadersApi });
         return response
@@ -34,3 +34,4 @@ export const commonDataPatchApiWithData = async (id, data) => {
         return error
     }
 }
+

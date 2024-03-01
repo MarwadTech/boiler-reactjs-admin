@@ -16,7 +16,8 @@ const Notification = () => {
     const [errorDialog, setErrorDialog] = useState(false)
     const [errorDialogData, setErrorDialogData] = useState({})
     const [isLoading, setIsLoading] = useState(false);
-    const [notificationCreate, setNotificationCreate] = useState(false)
+
+    const [createNotificationDialog, setCreateNotificationDialog] = useState(false)
 
 
 
@@ -29,9 +30,7 @@ const Notification = () => {
         try {
             setIsLoading(true)
             const result = await notificationGetApi(page);
-            console.log({ result });
             if (result.data) {
-                console.log(result.data.data.list);
                 setNotificationList(result.data.data.list);
                 setMeta(result.data.data.meta)
                 setIsLoading(false)
@@ -55,7 +54,7 @@ const Notification = () => {
 
 
     const notificationcreatedata = () => {
-        setNotificationCreate(true)
+
     }
 
 
@@ -67,11 +66,11 @@ const Notification = () => {
             <LoadingTopBar Progress={progress} />
             <div className='d-flex justify-content-between flex-wrap my-2'>
                 <h3>Notification</h3>
-                <button type="button" className={`btn btn-outline-primary-emphasis rounded-3 text-color`} onClick={() => notificationcreatedata()}>
+                <button type="button" className={`btn btn-outline-primary-emphasis rounded-3 text-color`} onClick={() => setCreateNotificationDialog(true)}>
                     <img src={notificationSendIcon} alt="add" className='me-1' />
                     Send </button>
             </div>
-            {notificationCreate && <Createnotification setNotificationCreate={setNotificationCreate} type={"all"} />}
+            {createNotificationDialog && <Createnotification setCreateNotificationDialog={setCreateNotificationDialog} type={"all"} />}
             {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
             <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} page={page} />
             <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">

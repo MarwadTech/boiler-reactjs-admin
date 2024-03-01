@@ -48,7 +48,6 @@ const Login = () => {
                     if (postapi.data.data.user.role === 'admin') {
                         setError(false);
                         setMessage(postapi.data.message);
-                        console.log(postapi.data.data.token);
                         localStorage.setItem("token", postapi.data.data.token);
                         setLogintoken(true)
 
@@ -79,10 +78,11 @@ const Login = () => {
             }
         };
 
-        if (!loginData.phone_number) {
-            setError('phone_number');
-            setMessage('Please Enter phone number');
-        } else if (loginData.phone_number.length !== 10) {
+        // if (!loginData.phone_number) {
+        //     setError('phone_number');
+        //     setMessage('Please Enter phone number');
+        // } else
+        if (loginData.phone_number.length !== 10) {
             setError('phone_number');
             setMessage('Please Enter 10 digit phone number');
         }
@@ -113,7 +113,7 @@ const Login = () => {
             <div className=' p-4 border-color shadow rounded mx-3 border-color' >
                 <div className='text-center d-flex justify-content-around align-items-center text-color mb-2'>
                     <img src={logo} width={80} height={80} alt="logo" className=' rounded' />
-                    <h3 className='m-0 '>React js</h3>
+                    <h3 className='m-0 '>Boiler Plate</h3>
                 </div>
                 <form onSubmit={handlelogin}>
                     <div className=' text-color'>
@@ -132,7 +132,7 @@ const Login = () => {
                                         e.preventDefault();
                                     }
                                 }}
-
+                                required
                             />
                         </div>
                         <label htmlFor="password" className="form-label m-0">Password</label>
@@ -145,7 +145,7 @@ const Login = () => {
                                 id='password' placeholder="Password"
                                 onChange={handleInputChange}
                                 maxLength={16}
-
+                                required
                             />
                             <span className="input-group-text" id="basic-addon">
                                 <a className='color cursor-pointer' onClick={showHide}>{showPassword ? <img src={eyeHideIcon} alt="hide" /> : <img src={eyeShowIcon} alt="show" />}</a>

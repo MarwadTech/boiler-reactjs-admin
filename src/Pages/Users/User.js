@@ -19,44 +19,48 @@ const User = () => {
     const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const [meta, setMeta] = useState({});
-    const [action, setAction] = useState();
+    // const [action, setAction] = useState();
     const [userDataList, setUserDataList] = useState([]);
     const [errorDialog, setErrorDialog] = useState(false)
     const [errorDialogData, setErrorDialogData] = useState({})
     const [isLoading, setIsLoading] = useState(false);
-    const [userEditData, setUserEditData] = useState(false)
-    const [userDeleteData, setUserDeleteData] = useState(false)
+    const [editUserDialog, setEditUserDialog] = useState(false)
+    const [deleteUserDialog, setDeleteUserDialog] = useState(false)
     const [userProfileData, setUserProfileData] = useState(false)
+    const [profileUpdateDialog, setProfileUpdateDialog] = useState(false)
 
-    const [notificationCreate, setNotificationCreate] = useState(false)
+    const [createNotificationDialog, setCreateNotificationDialog] = useState(false)
+    const [actionData, setActionData] = useState();
 
+    const action = (type, data) => {
+        setActionData(data)
+        switch (type) {
+            case 'delete':
+                setDeleteUserDialog(true);
+                break;
+            case 'edit':
+                setEditUserDialog(true);
+                break;
+            case 'notification':
+                setCreateNotificationDialog(true);
+                break;
+            case 'profile':
+                setProfileUpdateDialog(true);
+                break;
+            case 'navigate':
+                navigate(`/userdetails/${data.id}`);
+                break;
+            default:
 
+        }
 
-    const edituserdata = (data) => {
-        setUserEditData(true)
-        setAction(data)
     }
-
-    const deleteuserdata = (data) => {
-        setUserDeleteData(true)
-        setAction(data)
-    }
-    const updateUserProfile = (data) => {
-        setUserProfileData(true)
-        setAction(data)
-    }
-    const notificationcreatedata = (data) => {
-        setNotificationCreate(true)
-        setAction(data)
-    }
-
     const fetchData = async () => {
         setIsLoading(true)
         try {
             const result = await userGetApiWithPage(page);
             if (result.data) {
                 setUserDataList(result.data.data.list);
-                console.log(result.data.data.list);
                 setMeta(result.data.data.meta)
                 setIsLoading(false);
                 setProgress(100);
@@ -80,10 +84,10 @@ const User = () => {
 
             <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} page={page} />
             {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
-            {notificationCreate && <Createnotification setNotificationCreate={setNotificationCreate} action={action} type={"user"} />}
-            {userEditData && <Edituser setUserEditData={setUserEditData} action={action} fetchData={fetchData} />}
-            {userDeleteData && <DeleteUser setUserDeleteData={setUserDeleteData} action={action} fetchData={fetchData} />}
-            {userProfileData && <UpdateUserProfile setUserProfileData={setUserProfileData} action={action} fetchData={fetchData} />}
+            {createNotificationDialog && <Createnotification setCreateNotificationDialog={setCreateNotificationDialog} actionData={actionData} type={"user"} />}
+            {editUserDialog && <Edituser setEditUserDialog={setEditUserDialog} actionData={actionData} fetchData={fetchData} />}
+            {deleteUserDialog && <DeleteUser setDeleteUserDialog={setDeleteUserDialog} actionData={actionData} fetchData={fetchData} />}
+            {profileUpdateDialog && <UpdateUserProfile setProfileUpdateDialog={setProfileUpdateDialog} actionData={actionData} fetchData={fetchData} />}
 
             <div>
                 <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">
@@ -92,7 +96,7 @@ const User = () => {
                             <div className="card color p-2 h-100 ">
                                 <div className='d-flex text-color' >
 
-                                    <button className=' m-0 p-0 rounded position-relative single-border-color me-2' onClick={() => updateUserProfile(e)} >
+                                    <button className=' m-0 p-0 rounded position-relative single-border-color me-2' onClick={() => action("profile", e)} >
                                         <img src={e.avatar && e.avatar.pic_large || logo} width={80} height={80} alt="profile" className='rounded' />
                                         <div className="position-absolute bottom-0 end-0 me-1"><img src={addIcon} alt="add" style={{ width: '15px' }} /></div>
                                     </button>
@@ -104,19 +108,19 @@ const User = () => {
                                 <div className='mt-1'>
                                     {/* <button className='buttons p-0' style={{ width: '130px' }} onClick={() => navigate(`/learnerdetails`)}>More Details</button> */}
                                     <div className='w-100   d-flex justify-content-around align-items-center '>
-                                        <button className={`btnlink  m-0 p-1 px-2 text-color`} onClick={() => edituserdata(e)}><img src={editIcon} alt="edit" />
+                                        <button className={`btnlink  m-0 p-1 px-2 text-color`} onClick={() => action("edit", e)}><img src={editIcon} alt="edit" />
                                             {/* <br /><span style={{ fontSize: '10px' }}>Update</span> */}
                                         </button>
 
-                                        <button className={`btnlink m-0 p-1 px-2 text-color`} onClick={() => deleteuserdata(e)}> <img src={deleteIcon} alt="delete" />
+                                        <button className={`btnlink m-0 p-1 px-2 text-color`} onClick={() => action("delete", e)}> <img src={deleteIcon} alt="delete" />
                                             {/* <br /><span style={{ fontSize: '10px' }}>Delete</span> */}
                                         </button>
 
-                                        <button className={`btnlink m-0 p-1 px-2 text-color`} onClick={() => notificationcreatedata(e)}><img src={notificationIcon} alt="notification" />
+                                        <button className={`btnlink m-0 p-1 px-2 text-color`} onClick={() => action("notification", e)}><img src={notificationIcon} alt="notification" />
                                             {/* <br /><span style={{ fontSize: '10px' }}>Notification</span> */}
                                         </button>
 
-                                        <button className={`btnlink m-0 p-1 px-2 text-color`} onClick={() => navigate(`/userdetails/${e.id}`)}><img src={moreIcon} alt="more" />
+                                        <button className={`btnlink m-0 p-1 px-2 text-color`} onClick={() => action("navigate", e)}><img src={moreIcon} alt="more" />
                                             {/* <br /><span style={{ fontSize: '10px' }}> More Details</span> */}
                                         </button>
                                     </div>

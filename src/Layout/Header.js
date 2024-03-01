@@ -12,7 +12,7 @@ const Header = () => {
                 <div className={`container-fluid `}>
                     <div className='d-flex gap-2 '>
                         <img src={logo} alt="local Finds" className='rounded' width={40} height={40} />
-                        <h5 className={`mt-2 `} ><b>React js</b></h5>
+                        <h5 className={`mt-2 `} ><b>Boiler Plate</b></h5>
                     </div>
                     <div className="d-flex gap-1 ">
                         <button type="button" className={`btn btn-outline-primary-emphasis d-none d-lg-block text-white`} onClick={() => setLogoutModalShow(true)}>

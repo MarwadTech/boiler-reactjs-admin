@@ -4,7 +4,7 @@ export const FeedBackListLoader = () => {
         <>
             <div className='m-auto' style={{ opacity: .2 }}>
                 <div className="row m-sm-1 row-cols-1 row-cols-sm-1 row-cols-md-2  row-cols-xl-3" >
-                    {Array.from({ length: 6 }).map((_, index) => (
+                    {Array.from({ length: 6 }).map(() => (
                         <div className="col rounded p-1  " >
                             <div className="card color p-2 h-100">
                                 <div className="">
