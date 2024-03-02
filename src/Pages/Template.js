@@ -83,43 +83,47 @@ const Template = () => {
     return (
         <>
             <LoadingTopBar Progress={progress} />
-            <div className='my-2 d-flex justify-content-between flex-wrap'>
-                <h3>Template</h3>
-                <button type="button" onClick={() => action("add")} className={`btn btn-outline-primary-emphasis rounded-3 text-color`}>
-                    <img src={addIcon} alt="add" className='me-1' />
-                    Add Template </button>
-            </div>
-            {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
-            {/* <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} /> */}
-            {addTemplateDialog && <AddTemplate setAddTemplateDialog={setAddTemplateDialog} fetchData={fetchData} />}
-            {editTemplateDialog && <EditTemplate setEditTemplateDialog={setEditTemplateDialog} actionData={actionData} fetchData={fetchData} />}
-            {deleteTemplateDialog && <DeleteTemplate setDeleteTemplateDialog={setDeleteTemplateDialog} actionData={actionData} fetchData={fetchData} />}
-
-            <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-3  row-cols-xl-4">
-                {templateDataList.map((e) => (
-                    <div className="col rounded p-1  " >
-                        <div className="card text-color p-2 h-100">
-                            <div className=' boder-color position-relative'>
-                                <img src={e.img} alt="" className='w-100 rounded' />
-
-                            </div>
-                            <div >
-                                <p><b>{e.title} </b></p>
-                                <p className='m-0'><b>Description</b></p>
-                                <p>{e.description} </p>
-
-                            </div>
-                            <div className='d-flex justify-content-between'>
-
-                                <button type="button" onClick={() => action("delete", e)} className={`buttons w-50 mx-1`}>Delete </button>
-                                <button type="button" onClick={() => action("edit", e)} className={`buttons w-50 mx-1`}>Update </button>
-                            </div>
-                        </div>
+            <div id='main' className='rounded border overflow-auto px-2  h-100  '>
+                <div className="w-100 px-1">
+                    <div className='my-2 d-flex justify-content-between'>
+                        <h3>Template</h3>
+                        <button type="button" onClick={() => action("add")} className={`btn btn-outline-primary-emphasis rounded-3 text-color`}>
+                            <img src={addIcon} alt="add" className='me-1' />
+                            Add Template </button>
                     </div>
+                    {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
+                    {/* <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} /> */}
+                    {addTemplateDialog && <AddTemplate setAddTemplateDialog={setAddTemplateDialog} fetchData={fetchData} />}
+                    {editTemplateDialog && <EditTemplate setEditTemplateDialog={setEditTemplateDialog} actionData={actionData} fetchData={fetchData} />}
+                    {deleteTemplateDialog && <DeleteTemplate setDeleteTemplateDialog={setDeleteTemplateDialog} actionData={actionData} fetchData={fetchData} />}
+
+                    <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 ">
+                        {templateDataList.map((e) => (
+                            <div className="col rounded p-1  " >
+                                <div className="card text-color p-2 h-100">
+                                    <div className=' boder-color position-relative'>
+                                        <img src={e.img} alt="" className='w-100 rounded' />
+
+                                    </div>
+                                    <div >
+                                        <p><b>{e.title} </b></p>
+                                        <p className='m-0'><b>Description</b></p>
+                                        <p>{e.description} </p>
+
+                                    </div>
+                                    <div className='d-flex justify-content-between'>
+
+                                        <button type="button" onClick={() => action("delete", e)} className={`buttons w-50 mx-1`}>Delete </button>
+                                        <button type="button" onClick={() => action("edit", e)} className={`buttons w-50 mx-1`}>Update </button>
+                                    </div>
+                                </div>
+                            </div>
 
 
-                ))
-                }
+                        ))
+                        }
+                    </div>
+                </div>
             </div>
 
         </>

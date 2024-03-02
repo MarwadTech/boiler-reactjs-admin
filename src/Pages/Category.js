@@ -7,10 +7,11 @@ import DeleteCategoryData from '../Dialogs/CategoryDataDialogs/DeleteCategoryDat
 import Errordialog from '../Dialogs/Errordialog';
 import { categoryGetApi } from '../Services/Apicalling/CategoryApi';
 import { OnlineStatusApiCalling } from '../Components/OfflineOnlineIndicator';
+import { HelpAndSupportListLoader } from '../Components/Loaders/HelpAndSupportListLoader';
 
 const Category = () => {
     const [progress, setProgress] = useState(80);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [actionData, setActionData] = useState()
     const [addCategoryDialog, setAddCategoryDialog] = useState(false)
@@ -110,47 +111,73 @@ const Category = () => {
     return (
         <>
             <LoadingTopBar Progress={progress} />
-            <div className='d-flex justify-content-between flex-wrap my-2'>
-                <h3>Category</h3>
-                <button type="button" onClick={() => action("add")} className={`btn btn-outline-primary-emphasis rounded-3 text-color`}>
-                    <img src={addIcon} alt="add" className='me-1' />
-                    Add Category </button>
-            </div>
-            {/* <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} /> */}
-            {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
-            {addCategoryDialog && <AddCategoryData setAddCategoryDialog={setAddCategoryDialog} />}
-            {editCategoryDialog && <EditCategoryData setEditCategoryDialog={setEditCategoryDialog} actionData={actionData} fetchData={fetchData} />}
-            {deleteCategoryDialog && <DeleteCategoryData setDeleteCategoryDialog={setDeleteCategoryDialog} actionData={actionData} fetchData={fetchData} />}
+            <div id='main' className='rounded border overflow-auto px-2  h-100  '>
 
-            <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">
-                {categoryListdu.map((e) => (
-                    <div className="col rounded p-1 " >
-                        <div className="card color p-2 px-3 h-100 ">
-                            <div className='text-color'>
-                                <div className='d-flex justify-content-between align-items-center'>
-                                    <p className='m-0'><b>Name</b></p>
-                                    <div>
-                                        <button type="button" className={`btnlink rounded-3 p-1 me-2`} onClick={() => action("edit", e)}>
-                                            <img src={editIcon} alt="edit" />
-                                        </button>
-                                        <button type="button" className={`btnlink rounded-3 p-1 `} onClick={() => action("delete", e)}>
-                                            <img src={deleteIcon} alt="delete" />
-                                        </button>
+                <div className="w-100 px-1">
+                    <div className='d-flex justify-content-between flex-wrap my-2'>
+                        <h3>Category</h3>
+                        <button type="button" onClick={() => action("add")} className={`btn btn-outline-primary-emphasis rounded-3 text-color`}>
+                            <img src={addIcon} alt="add" className='me-1' />
+                            Add Category </button>
+                    </div>
+
+
+
+                    {/* <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} /> */}
+                    {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
+                    {addCategoryDialog && <AddCategoryData setAddCategoryDialog={setAddCategoryDialog} />}
+                    {editCategoryDialog && <EditCategoryData setEditCategoryDialog={setEditCategoryDialog} actionData={actionData} fetchData={fetchData} />}
+                    {deleteCategoryDialog && <DeleteCategoryData setDeleteCategoryDialog={setDeleteCategoryDialog} actionData={actionData} fetchData={fetchData} />}
+
+
+
+
+
+
+                    <div>
+                        <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">
+                            {categoryListdu.map((e) => (
+                                <div className="col rounded p-1 " >
+                                    <div className="card color p-2 px-3 h-100 ">
+                                        <div className='text-color'>
+                                            <div className='d-flex justify-content-between align-items-center'>
+                                                <p className='m-0'><b>Name</b></p>
+                                                <div>
+                                                    <button type="button" className={`btnlink rounded-3 p-1 me-2`} onClick={() => action("edit", e)}>
+                                                        <img src={editIcon} alt="edit" />
+                                                    </button>
+                                                    <button type="button" className={`btnlink rounded-3 p-1 `} onClick={() => action("delete", e)}>
+                                                        <img src={deleteIcon} alt="delete" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <p> {e.name} </p>
+                                            <p className='m-0'><b> Created On :</b>{new Date(e.created_at.split("T")[0]).toDateString()} </p>
+                                            <p className='m-0'><b> Updated On :</b>{new Date(e.updated_at.split("T")[0]).toDateString()} </p>
+                                        </div>
                                     </div>
                                 </div>
-                                <p> {e.name} </p>
-                                <p className='m-0'><b> Created On :</b>{new Date(e.created_at.split("T")[0]).toDateString()} </p>
-                                <p className='m-0'><b> Updated On :</b>{new Date(e.updated_at.split("T")[0]).toDateString()} </p>
-                            </div>
+                            ))}
+
                         </div>
                     </div>
-                ))}
 
+
+
+
+
+
+
+
+
+
+
+
+
+                    {isLoading && <HelpAndSupportListLoader />}
+
+                </div>
             </div>
-
-
-
-
 
 
         </>

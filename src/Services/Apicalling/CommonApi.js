@@ -5,7 +5,7 @@ export const deleteApiWithId = async (id, point) => {
     let apiLink;
     switch (point) {
         case "user":
-            apiLink = `${userApi}/${id}`;
+            apiLink = `${userApi}/${id}/`;
             break;
         case "commondata":
             apiLink = `${commonDataApi}/${id}`;

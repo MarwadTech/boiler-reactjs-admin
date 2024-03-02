@@ -1,7 +1,7 @@
 import axios from "axios";
 import { HeadersApi, notificationsApi } from "../Contexts/Context";
 export const notificationGetApi = async (page) => {
-    const apiLink = `${notificationsApi}?page=${page}`;
+    const apiLink = `${notificationsApi}?page=${page}&limit=12`;
     try {
         const response = await axios.get(apiLink, { headers: HeadersApi });
         return response;

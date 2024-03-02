@@ -12,6 +12,10 @@ export { default as callIcon } from "./Images/ic_call.svg";
 export { default as passwordIcon } from "./Images/ic_password.svg";
 export { default as eyeHideIcon } from "./Images/ic_eye_hide.svg";
 export { default as eyeShowIcon } from "./Images/ic_eye_show.svg";
+export { default as mailIcon } from "./Images/ic_mail.svg";
+
+export { default as errorIcon } from "./Images/ic_error.svg";
+export { default as successIcon } from "./Images/ic_success.svg";
 
 // sidebar and menu
 export { default as logoutIcon } from "./Images/ic_logout.svg";
@@ -39,6 +43,7 @@ export { default as closeIcon } from "./Images/ic_close.svg";
 export { default as notificationSendIcon } from "./Images/ic_notification_send.svg";
 export { default as moreIcon } from "./Images/ic_more.svg";
 export { default as actionIcon } from "./Images/ic_action.svg";
+export { default as arrowUpIcon } from "./Images/ic_arrow-up-circle.svg";
 
 export { default as globeIcon } from "./Images/ic_globe.svg";
 

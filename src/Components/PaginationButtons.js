@@ -4,7 +4,7 @@ import { chevronDoubleLeftIcon, chevronDoubleRightIcon, chevronLeftIcon, chevron
 // Component for rendering pagination buttons
 const PaginationButtons = ({ meta, page, setPage }) => {
     return (
-        <div className='text-center mt-3'>
+        <div className='text-center my-3'>
             <div className="btn-group btn-group-sm" role="group" aria-label="Small button group">
                 {/* Button to navigate to the first page */}
                 <button type="button" className={`btn border  ${page === 1 && 'disabled'}`} onClick={() => setPage(1)}><img src={chevronDoubleLeftIcon} alt="<<" /></button>

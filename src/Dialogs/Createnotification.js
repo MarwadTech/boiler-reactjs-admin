@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { closeIcon } from '../Assets/Index'
 import { imagePostApiWithCollection } from '../Services/Apicalling/CommonApi';
 import { notificationPostApiWithData } from '../Services/Apicalling/NotificationApi';
+import TorshMessage from '../Components/TorshMessage';
 
 const Createnotification = ({ setCreateNotificationDialog, actionData, type }) => {
-
+    const [torsh, setTorsh] = useState(false)
     const [img, setImg] = useState(null);
     const [imgId, setImgId] = useState();
     const [error, setError] = useState()
@@ -36,6 +37,7 @@ const Createnotification = ({ setCreateNotificationDialog, actionData, type }) =
     const selectImage = (e) => {
         setError('')
         setMessage('')
+        setTorsh(false)
         const selectedFile = e.target.files[0];
         setImg(selectedFile);
 
@@ -50,19 +52,23 @@ const Createnotification = ({ setCreateNotificationDialog, actionData, type }) =
                 if (postapi.data) {
                     setImgId(postapi.data.data.id);
                     setError(false);
+                    setTorsh(true)
                     setMessage(postapi.data.message);
                 } else {
                     setError(true)
+                    setTorsh(true)
                     setMessage("Something went wrong")
                 }
             } catch (error) {
                 setError(true)
+                setTorsh(true)
                 setMessage("Something went wrong")
             }
 
         };
         if (!img) {
             setError('image')
+            setTorsh(true)
             setMessage("Please Select Image")
         } else {
             validateAndSubmit();
@@ -73,6 +79,7 @@ const Createnotification = ({ setCreateNotificationDialog, actionData, type }) =
     const handleChange = (e) => {
         setError('')
         setMessage('')
+        setTorsh(false)
         const { name, value } = e.target
         setNotificationData((prevState) => ({ ...prevState, [name]: value }));
     }
@@ -81,16 +88,19 @@ const Createnotification = ({ setCreateNotificationDialog, actionData, type }) =
         try {
             const postapi = await notificationPostApiWithData(notificationData)
             if (postapi.data) {
+                setTorsh(true)
                 setMessage(postapi.data.message)
                 setTimeout(() => {
                     setCreateNotificationDialog();
                 }, 500)
             } else if (postapi.response.data.errors) {
+                setTorsh(true)
                 setError(postapi.response.data.errors[0].key)
                 setMessage(postapi.response.data.errors[0].message)
             }
         } catch (error) {
             setError(true)
+            setTorsh(true)
             setMessage("something wesnt wrong")
         }
     }
@@ -99,23 +109,28 @@ const Createnotification = ({ setCreateNotificationDialog, actionData, type }) =
         e.preventDefault();
         if (notificationData.heading.trim() === "") {
             setError('heading');
+            setTorsh(true)
             setMessage("Please Enter Heading");
         }
         else if (/ \s/.test(notificationData.heading)) {
             setError('heading');
+            setTorsh(true)
             setMessage("Please remove exrta space");
         }
         else if (notificationData.content.trim() === "") {
             setError('content');
+            setTorsh(true)
             setMessage("Please Enter Content");
         }
         else if (/ \s/.test(notificationData.content)) {
             setError('content');
+            setTorsh(true)
             setMessage("Please remove exrta space");
         }
         else if (img) {
             if (!imgId) {
                 setError("image")
+                setTorsh(true)
                 setMessage("Add image");
             } else {
                 validateAndSubmit()
@@ -132,66 +147,55 @@ const Createnotification = ({ setCreateNotificationDialog, actionData, type }) =
 
 
     return (
-        <div className={`d-flex justify-content-center align-items-center bg-opacity-75 h-100  w-100  position-fixed start-0 top-0 z-2 bg-white `} >
-            <div className={`px-4 py-3 shadow rounded mx-3 border-color bg-white`}>
-                <div className='d-flex  justify-content-end'>
-                    <button className='btn btn-link  m-0 py-0 px-0 ' onClick={() => setCreateNotificationDialog()}><img src={closeIcon} alt="close" /></button>
-                </div>
-                <h3 className='text-center'>Create Notification</h3>
-                <div className="input-group mb-2">
-                    <input type="file" className={`form-control focus-ring focus-ring-light color ${error === 'image' && 'border-danger'}`}
-                        onChange={selectImage} aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
-                    <button className={`buttons`} onClick={handlePostImage}>
-                        {loader && <div className="spinner-border spinner-border-sm me-2" role="status">
-                            <span className="visually-hidden">Loading...</span>
+        <>
+            <TorshMessage error={error} message={message} torsh={torsh} setTorsh={setTorsh} />
+            <div className={`d-flex justify-content-center align-items-center bg-opacity-75 h-100  w-100  position-fixed start-0 top-0 z-2 bg-white `} >
+                <div className={`px-4 py-3 shadow rounded mx-3 border-color bg-white`}>
+                    <div className='d-flex  justify-content-end'>
+                        <button className='btn btn-link  m-0 py-0 px-0 ' onClick={() => setCreateNotificationDialog()}><img src={closeIcon} alt="close" /></button>
+                    </div>
+                    <h3 className='text-center'>Create Notification</h3>
+                    <div className="input-group mb-2">
+                        <input type="file" className={`form-control focus-ring focus-ring-light color ${error === 'image' && 'border-danger'}`}
+                            onChange={selectImage} aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
+                        <button className={`buttons`} onClick={handlePostImage}>
+                            {loader && <div className="spinner-border spinner-border-sm me-2" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>}
+                            Add </button>
+                    </div>
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-floating mb-1">
+                            <input type="text" value={notificationData.heading} onChange={handleChange}
+                                className={`form-control focus-ring focus-ring-light color ${error === 'heading' && 'border-danger'}`}
+                                id="name" placeholder="Message" name='heading' maxLength={25} required />
+                            <label htmlFor="name">Heading </label>
+                        </div>
+
+                        {type === "user" && <div className="form-floating mb-1">
+                            <input type="text"
+                                className={`form-control focus-ring focus-ring-light text-color`}
+                                id="user" placeholder="user" onChange={handleChange} value={actionData.full_name} readOnly />
+                            <label htmlFor="user" >
+                                user
+                            </label>
                         </div>}
-                        Add </button>
+
+                        <div className="form-floating">
+                            <textarea className={`form-control focus-ring focus-ring-light color ${error === 'content' && 'border-danger'}`} value={notificationData.content} name='content' onChange={handleChange} placeholder="Leave a comment here" id="content" required style={{ height: 80 }} />
+                            <label htmlFor="content">Content </label>
+                        </div>
+
+                        {/* <p className={`${error ? 'text-danger' : 'text-success'}`}>{message}</p> */}
+                        <div className='d-flex justify-content-center'>
+                            <button className='my-2 buttons' type='submit' style={loader ? { backgroundColor: "#691b9a85" } : {}} disabled={loader} >
+                                Send Notification</button>
+                        </div>
+                    </form>
                 </div>
-
-                <form onSubmit={handleSubmit}>
-                    <div className="form-floating mb-1">
-                        <input type="text" value={notificationData.heading} onChange={handleChange}
-                            className={`form-control focus-ring focus-ring-light color ${error === 'heading' && 'border-danger'}`}
-                            id="name" placeholder="Message" name='heading' maxLength={25} required />
-                        <label htmlFor="name">Heading </label>
-                    </div>
-
-                    {type === "user" && <div className="form-floating mb-1">
-                        <input type="text"
-                            className={`form-control focus-ring focus-ring-light text-color`}
-                            id="user" placeholder="user" onChange={handleChange} value={actionData.full_name} readOnly />
-                        <label htmlFor="user" >
-                            user
-                        </label>
-                    </div>}
-
-                    <div className="form-floating">
-                        <textarea className={`form-control focus-ring focus-ring-light color ${error === 'content' && 'border-danger'}`} value={notificationData.content} name='content' onChange={handleChange} placeholder="Leave a comment here" id="content" required style={{ height: 80 }} />
-                        <label htmlFor="content">Content </label>
-                    </div>
-
-                    <p className={`${error ? 'text-danger' : 'text-success'}`}>{message}</p>
-                    <div className='d-flex justify-content-center'>
-                        <button className='my-2 buttons' type='submit' style={loader ? { backgroundColor: "#691b9a85" } : {}} disabled={loader} >
-                            Send Notification</button>
-                    </div>
-                </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             </div>
-        </div>
+        </>
     )
 }
 

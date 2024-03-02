@@ -168,65 +168,86 @@ const Level = () => {
     return (
         <>
             <LoadingTopBar Progress={progress} />
-            <div className='d-flex justify-content-between flex-wrap my-2'>
-                <h3>Level</h3>
-                <button type="button" className={`btn btn-outline-primary-emphasis rounded-3 text-color`} onClick={() => action("add")}>
-                    <img src={addIcon} alt="add" className='me-1' />
-                    Level </button>
-            </div>
-            <div>
-                {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
-                {/* <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} /> */}
+            <div id='main' className='rounded border overflow-auto   h-100  '>
+                <div className="w-100 px-1">
+                    <div className='d-flex justify-content-between flex-wrap m-2'>
+                        <h3>Level</h3>
+                        <button type="button" className={`btn btn-outline-primary-emphasis rounded-3 text-color`} onClick={() => action("add")}>
+                            <img src={addIcon} alt="add" className='me-1' />
+                            Level </button>
+                    </div>
+                    <div>
+                        {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
+                        {/* <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} /> */}
 
-                {addLevelDialog && <AddLevel setAddLevelDialog={setAddLevelDialog} fetchData={fetchData} />}
-                {editLevelDialog && <EditLevel setEditLevelDialog={setEditLevelDialog} actionData={actionData} fetchData={fetchData} />}
-                {deleteLevelDialog && <DeleteLevel setDeleteLevelDialog={setDeleteLevelDialog} actionData={actionData} fetchData={fetchData} />}
+                        {addLevelDialog && <AddLevel setAddLevelDialog={setAddLevelDialog} fetchData={fetchData} />}
+                        {editLevelDialog && <EditLevel setEditLevelDialog={setEditLevelDialog} actionData={actionData} fetchData={fetchData} />}
+                        {deleteLevelDialog && <DeleteLevel setDeleteLevelDialog={setDeleteLevelDialog} actionData={actionData} fetchData={fetchData} />}
 
-                <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">
-                    {levelListDu.map((e) => (
-                        <div className="col rounded p-1 " >
-                            <div className="card color p-2 px-3 h-100 ">
-                                <div className='text-color'>
-                                    <div className='d-flex justify-content-between align-items-center'>
-                                        <p className='m-0'><b>Lever </b> {e.level}</p>
-                                        <div>
-                                            <button type="button" className={`btnlink rounded-3 p-1 me-2`} onClick={() => action("edit", e)}>
-                                                <img src={editIcon} alt="edit" />
-                                            </button>
-                                            <button type="button" className={`btnlink rounded-3 p-1 `} onClick={() => action("delete", e)}>
-                                                <img src={deleteIcon} alt="delete" />
-                                            </button>
+
+
+
+
+                        <div className='mx-2 mx-sm-4'>
+                            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3 ">
+                                {levelListDu.map((e) => (
+                                    <div className="col rounded p-1 " >
+                                        <div className="card color p-2 px-3 h-100 ">
+                                            <div className='text-color'>
+                                                <div className='d-flex justify-content-between align-items-center'>
+                                                    <p className='m-0'><b>Lever </b> {e.level}</p>
+                                                    <div>
+                                                        <button type="button" className={`btnlink rounded-3 p-1 me-2`} onClick={() => action("edit", e)}>
+                                                            <img src={editIcon} alt="edit" />
+                                                        </button>
+                                                        <button type="button" className={`btnlink rounded-3 p-1 `} onClick={() => action("delete", e)}>
+                                                            <img src={deleteIcon} alt="delete" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <p><b>Percentage</b> {e.percentage} %</p>
+                                                <p className=' m-0'><b>Title</b></p>
+                                                <p>{e.title}</p>
+                                                <p className='m-0'><b> Created On :</b>{new Date(e.created_at.split("T")[0]).toDateString()} </p>
+                                                <p className='m-0'><b> Updated On :</b>{new Date(e.updated_at.split("T")[0]).toDateString()} </p>
+                                                {/* <p>{e.data}</p> */}
+                                            </div>
                                         </div>
                                     </div>
-                                    <p><b>Percentage</b> {e.percentage} %</p>
-                                    <p className=' m-0'><b>Title</b></p>
-                                    <p>{e.title}</p>
-                                    <p className='m-0'><b> Created On :</b>{new Date(e.created_at.split("T")[0]).toDateString()} </p>
-                                    <p className='m-0'><b> Updated On :</b>{new Date(e.updated_at.split("T")[0]).toDateString()} </p>
-                                    {/* <p>{e.data}</p> */}
-                                </div>
+                                ))}
+
                             </div>
                         </div>
-                    ))}
 
+
+
+
+
+
+
+
+
+
+
+                        <div className="d-flex redio-button m-auto text-center my-4">
+                            {labels.map((label) => (
+                                <RadioButton
+                                    key={label}
+                                    active={activeData} // Pass active state to each RadioButton
+                                    setActive={setActiveData} // Pass setActive function to each RadioButton
+                                    label={label} // Pass label to each RadioButton
+                                />
+                            ))}
+                        </div>
+                        <p>{activeData}</p>
+
+
+
+
+                        {isLoading && <HelpAndSupportListLoader />}
+
+                    </div>
                 </div>
-                <div className="d-flex redio-button m-auto text-center my-4">
-                    {labels.map((label) => (
-                        <RadioButton
-                            key={label}
-                            active={activeData} // Pass active state to each RadioButton
-                            setActive={setActiveData} // Pass setActive function to each RadioButton
-                            label={label} // Pass label to each RadioButton
-                        />
-                    ))}
-                </div>
-                <p>{activeData}</p>
-
-
-
-
-                {isLoading && <HelpAndSupportListLoader />}
-
             </div>
 
         </>

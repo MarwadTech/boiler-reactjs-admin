@@ -61,14 +61,21 @@
     min-width: 300px;
 }
 
-
 .w-75-100 {
     width: 100%;
 }
 
+.w-25-90 {
+    width: 90%;
+}
+
 @media screen and (min-width: 480px) {
     .w-75-100 {
-        width: 80%;
+        width: 75%;
+    }
+
+    .w-25-90 {
+        width: 25%;
     }
 }
 
