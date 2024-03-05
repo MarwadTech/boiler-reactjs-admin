@@ -2,31 +2,33 @@ import React, { useEffect, useState } from 'react'
 import { LoadingTopBar } from '../Components/Loadingbar'
 import { StarRat } from '../Components/FiveStar';
 import { logo } from '../Assets/Index';
-import { appRatingGetApi } from '../Services/Apicalling/RatingsApi';
+import { getAppRatingApi } from '../Services/Apicalling/RatingsApi';
 import PaginationButtons from '../Components/PaginationButtons';
 import { OnlineStatusApiCalling } from '../Components/OfflineOnlineIndicator';
 import Errordialog from '../Dialogs/Errordialog';
 import { FeedBackListLoader } from '../Components/Loaders/FeedBackListLoader';
+import { RadioButton } from '../Components/RadioButton';
 
 const FeedBack = () => {
+    const labels = ["FeedBack", "reviews"];
+    const [activeData, setActiveData] = useState("FeedBack")
     const [progress, setProgress] = useState(80);
     const [appRating, setAppRating] = useState([]);
     const [page, setPage] = useState(1);
     const [meta, setMeta] = useState({})
-    const [errorDialog, setErrorDialog] = useState(false)
     const [errorDialogData, setErrorDialogData] = useState({})
+    const [errorDialog, setErrorDialog] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
 
-
-
-
+    // Function to fetch feedback data
     const fetchData = async () => {
         setIsLoading(true)
         try {
-            const result = await appRatingGetApi(page);
+            const result = await getAppRatingApi(page);
             if (result.data) {
                 setIsLoading(false)
                 setAppRating(result.data.data.list);
+                console.log(result.data.data.list);
                 setMeta(result.data.data.meta)
                 setProgress(100);
             }
@@ -42,9 +44,6 @@ const FeedBack = () => {
     };
 
 
-
-
-
     return (
         <>
             <LoadingTopBar Progress={progress} />
@@ -54,8 +53,23 @@ const FeedBack = () => {
                         <h3> Feed Back</h3>
                     </div>
                     <div>
-                        {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
+                        {/* Component to handle online/offline status */}
                         <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} page={page} />
+                        {/* Error dialog component */}
+                        {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
+
+                        {/* <div className="d-flex redio-button m-auto text-center my-4">
+                            {labels.map((label) => (
+                                <RadioButton
+                                    key={label}
+                                    active={activeData} // Pass active state to each RadioButton
+                                    setActive={setActiveData} // Pass setActive function to each RadioButton
+                                    label={label} // Pass label to each RadioButton
+                                />
+                            ))}
+                        </div> */}
+
+
                         <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">
                             {appRating.map((e) => (
                                 <div key={e.id} className="col rounded p-1  " >

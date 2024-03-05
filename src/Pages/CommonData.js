@@ -2,27 +2,24 @@ import React, { useState } from 'react'
 import { addIcon, deleteIcon, editIcon, logo } from '../Assets/Index';
 import { LoadingTopBar } from '../Components/Loadingbar';
 import Addcommondata from '../Dialogs/CommonDataDialogs/AddCommonData';
-import Deletecommondata from '../Dialogs/CommonDataDialogs/DeleteCommonData';
 import Editcommondata from '../Dialogs/CommonDataDialogs/EditCommonData';
 import Errordialog from '../Dialogs/Errordialog';
 import { OnlineStatusApiCalling } from '../Components/OfflineOnlineIndicator';
-import { commonDataGetApi } from '../Services/Apicalling/CommonDataApi';
+import { getCommonDataApi } from '../Services/Apicalling/CommonDataApi';
 import { HelpAndSupportListLoader } from '../Components/Loaders/HelpAndSupportListLoader';
+import DeleteConfirmation from '../Dialogs/DeleteConfirmation';
 const Commondata = () => {
-    const [errorDialog, setErrorDialog] = useState(false)
     const [errorDialogData, setErrorDialogData] = useState({})
     const [progress, setProgress] = useState(80);
     const [commonDataList, setCommonDataList] = useState([])
-    const [commonData, setCommonData] = useState()
+    const [actionData, setActionData] = useState();
     const [addCommonDataDialog, setAddCommonDataDialog] = useState(false);
-    const [deleteCommonDataDialog, setDeleteCommonDataDialog] = useState(false);
+    const [deleteDialog, setDeleteDialog] = useState(false)
     const [editCommonDataDialog, setEditCommonDataDialog] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
+    const [errorDialog, setErrorDialog] = useState(false)
 
-    const [actionData, setActionData] = useState();
-
-
-
+    // Function to handle various actions on common data
     const action = (type, data) => {
         setActionData(data)
         switch (type) {
@@ -30,7 +27,7 @@ const Commondata = () => {
                 setAddCommonDataDialog(true);
                 break;
             case 'delete':
-                setDeleteCommonDataDialog(true);
+                setDeleteDialog(true);
                 break;
             case 'edit':
                 setEditCommonDataDialog(true);
@@ -42,19 +39,11 @@ const Commondata = () => {
 
     }
 
-
-
-
-
-
-
-
-
-
+    // Function to fetch common data
     const fetchData = async () => {
         try {
             setIsLoading(true)
-            const result = await commonDataGetApi();
+            const result = await getCommonDataApi();
             if (result.data) {
                 setCommonDataList(result.data.data)
                 setProgress(100)
@@ -77,23 +66,24 @@ const Commondata = () => {
             <div id='main' className='rounded border overflow-auto px-2  h-100  '>
                 <div className="w-100 px-1">
                     <div className='d-flex justify-content-between flex-wrap my-2'>
-
                         <h3> Common Data</h3>
                         <button type="button" onClick={() => action("add")} className={`btn btn-outline-primary-emphasis rounded-3 text-color`}>
                             <img src={addIcon} alt="add" className='me-1' />
-                            Add </button>
+                            Add Common Data </button>
                     </div>
-
+                    {/* Component to handle online/offline status */}
                     <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} />
+                    {/* Error dialog component */}
                     {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
+                    {/* Dialog components for actions */}
                     {addCommonDataDialog && <Addcommondata setAddCommonDataDialog={setAddCommonDataDialog} fetchData={fetchData} />}
-                    {deleteCommonDataDialog && <Deletecommondata setDeleteCommonDataDialog={setDeleteCommonDataDialog} actionData={actionData} fetchData={fetchData} />}
+                    {deleteDialog && <DeleteConfirmation setDeleteDialog={setDeleteDialog} actionData={actionData} fetchData={fetchData} type={"commondata"} />}
                     {editCommonDataDialog && <Editcommondata setEditCommonDataDialog={setEditCommonDataDialog} actionData={actionData} fetchData={fetchData} />}
                     <div>
                         <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">
                             {commonDataList.map((e) => (
                                 <div className="col rounded p-1 " >
-                                    <div className="card color p-2 px-3 h-100 ">
+                                    <div className="card text-color p-2 px-3 h-100 ">
                                         <div className='text-color'>
                                             <div className='d-flex justify-content-between align-items-center'>
                                                 <p className='m-0'><b>Key</b></p>

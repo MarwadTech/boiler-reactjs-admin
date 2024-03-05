@@ -1,7 +1,7 @@
 
 import axios from "axios";
 import { reportsApi, HeadersApi } from "../Contexts/Context";
-export const reportGetApi = async (page) => {
+export const getReportApi = async (page) => {
 
     const apiLink = `${reportsApi}?page=${page}&limit=9`;
     try {

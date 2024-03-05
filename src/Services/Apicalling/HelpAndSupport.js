@@ -1,13 +1,15 @@
 
 import axios from "axios";
-import { HeadersApi, suggestionsApi } from "../Contexts/Context";
-export const suggestionsGetApi = async (filter, page) => {
+import { HeadersApi, queriesApi } from "../Contexts/Context";
+export const getQueriesApi = async (page) => {
 
-    const apiLink = `${suggestionsApi}?type=${filter}&page=${page}&limit=9`;
+    const apiLink = `${queriesApi}?page=${page}&limit=9`;
     try {
         const response = await axios.get(apiLink, { headers: HeadersApi });
+        console.log({ response });
         return response;
     } catch (error) {
+        console.log({ error });
         return error;
     }
 }

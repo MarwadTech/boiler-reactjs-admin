@@ -112,7 +112,7 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                                 <div className="col rounded p-1" >
-                                    <div className="card color p-2 py-4 h-100 text-center">
+                                    <div className="card text-color p-2 py-4 h-100 text-center">
                                         <h5>Overall Feed Back</h5>
                                         <h5>{4.5}</h5>
                                         <p className='m-0'>Number of count sent feed back user</p>
@@ -131,8 +131,6 @@ const Dashboard = () => {
 
                             </div>
                         </div>
-
-
 
                         <div className='my-1'>
                             <h5 className=' m-0'>Popular</h5>

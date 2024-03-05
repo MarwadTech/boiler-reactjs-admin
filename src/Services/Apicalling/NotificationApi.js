@@ -1,21 +1,25 @@
+
+
 import axios from "axios";
 import { HeadersApi, notificationsApi } from "../Contexts/Context";
-export const notificationGetApi = async (page) => {
-    const apiLink = `${notificationsApi}?page=${page}&limit=12`;
-    try {
-        const response = await axios.get(apiLink, { headers: HeadersApi });
-        return response;
-    } catch (error) {
-        return error;
-    }
-}
 
-export const notificationPostApiWithData = async (data) => {
-    const apiLink = `${notificationsApi}/notify-users`;
+const sendRequest = async (method, url, data = null) => {
     try {
-        const response = await axios.post(apiLink, data, { headers: HeadersApi });
-        return response
+        const response = await axios({ method, url, data, headers: HeadersApi });
+        return response; // Return response data instead of entire response
     } catch (error) {
-        return error;
+        throw error; // Throw the error to be caught by the caller
     }
-}
+};
+
+// get 
+export const getNotificationsApi = async (page) => {
+    const apiLink = `${notificationsApi}?page=${page}&limit=12`;
+    return sendRequest("get", apiLink);
+};
+
+// send
+export const postNotificationApi = async (data) => {
+    const apiLink = `${notificationsApi}/notify-users`;
+    return sendRequest("post", apiLink, data);
+};

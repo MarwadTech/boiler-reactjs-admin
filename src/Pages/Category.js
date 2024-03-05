@@ -1,28 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { LoadingTopBar } from '../Components/Loadingbar'
 import { addIcon, deleteIcon, editIcon } from '../Assets/Index';
-import AddCategoryData from '../Dialogs/CategoryDataDialogs/AddCategoryData';
-import EditCategoryData from '../Dialogs/CategoryDataDialogs/EditCategoryData';
-import DeleteCategoryData from '../Dialogs/CategoryDataDialogs/DeleteCategoryData';
+import AddCategoryData from '../Dialogs/CategoryDialogs/AddCategoryData';
+import EditCategoryData from '../Dialogs/CategoryDialogs/EditCategoryData';
 import Errordialog from '../Dialogs/Errordialog';
-import { categoryGetApi } from '../Services/Apicalling/CategoryApi';
+import { getCategoryApi } from '../Services/Apicalling/CategoryApi';
 import { OnlineStatusApiCalling } from '../Components/OfflineOnlineIndicator';
 import { HelpAndSupportListLoader } from '../Components/Loaders/HelpAndSupportListLoader';
+import DeleteConfirmation from '../Dialogs/DeleteConfirmation';
 
 const Category = () => {
     const [progress, setProgress] = useState(80);
-    const [isLoading, setIsLoading] = useState(false);
-
     const [actionData, setActionData] = useState()
-    const [addCategoryDialog, setAddCategoryDialog] = useState(false)
-    const [deleteCategoryDialog, setDeleteCategoryDialog] = useState(false)
-    const [editCategoryDialog, setEditCategoryDialog] = useState(false)
-
-    const [errorDialog, setErrorDialog] = useState(false)
     const [errorDialogData, setErrorDialogData] = useState({})
-
     const [categoryList, setCategoryList] = useState([])
-
     const [categoryListdu, setCategoryListdu] = useState([
         {
             "id": "750f45a86feb44aeb7c5b1f96e836308",
@@ -66,8 +57,14 @@ const Category = () => {
             "updated_at": "2023-12-01T13:48:30.000Z"
         },
     ],)
+    const [isLoading, setIsLoading] = useState(false);
+    const [addCategoryDialog, setAddCategoryDialog] = useState(false)
+    const [deleteDialog, setDeleteDialog] = useState(false)
+    const [deleteCategoryDialog, setDeleteCategoryDialog] = useState(false)
+    const [editCategoryDialog, setEditCategoryDialog] = useState(false)
+    const [errorDialog, setErrorDialog] = useState(false)
 
-
+    // Function to handle various actions on categorie
     const action = (type, data) => {
         setActionData(data)
         switch (type) {
@@ -75,7 +72,7 @@ const Category = () => {
                 setAddCategoryDialog(true);
                 break;
             case 'delete':
-                setDeleteCategoryDialog(true);
+                setDeleteDialog(true);
                 break;
             case 'edit':
                 setEditCategoryDialog(true);
@@ -87,10 +84,11 @@ const Category = () => {
 
     }
 
+    // Function to fetch category data
     const fetchData = async () => {
         try {
             setIsLoading(true)
-            const result = await categoryGetApi();
+            const result = await getCategoryApi();
             if (result.data) {
                 setCategoryList(result.data)
                 setProgress(100)
@@ -111,8 +109,7 @@ const Category = () => {
     return (
         <>
             <LoadingTopBar Progress={progress} />
-            <div id='main' className='rounded border overflow-auto px-2  h-100  '>
-
+            <div className='rounded border overflow-auto px-2  h-100  '>
                 <div className="w-100 px-1">
                     <div className='d-flex justify-content-between flex-wrap my-2'>
                         <h3>Category</h3>
@@ -121,24 +118,20 @@ const Category = () => {
                             Add Category </button>
                     </div>
 
-
-
+                    {/* Component to handle online/offline status and fetch data */}
                     {/* <OnlineStatusApiCalling setIsLoading={setIsLoading} fetchData={fetchData} /> */}
+                    {/* Error dialog component */}
                     {errorDialog && <Errordialog errorDialogData={errorDialogData} />}
-                    {addCategoryDialog && <AddCategoryData setAddCategoryDialog={setAddCategoryDialog} />}
+                    {/* Dialog components for actions */}
+                    {addCategoryDialog && <AddCategoryData setAddCategoryDialog={setAddCategoryDialog} fetchData={fetchData} />}
                     {editCategoryDialog && <EditCategoryData setEditCategoryDialog={setEditCategoryDialog} actionData={actionData} fetchData={fetchData} />}
-                    {deleteCategoryDialog && <DeleteCategoryData setDeleteCategoryDialog={setDeleteCategoryDialog} actionData={actionData} fetchData={fetchData} />}
-
-
-
-
-
+                    {deleteDialog && <DeleteConfirmation setDeleteDialog={setDeleteDialog} actionData={actionData} fetchData={fetchData} type={"category"} />}
 
                     <div>
                         <div className="row m-sm-1 row-cols-1 row-cols-sm-2 row-cols-md-2  row-cols-xl-3">
                             {categoryListdu.map((e) => (
                                 <div className="col rounded p-1 " >
-                                    <div className="card color p-2 px-3 h-100 ">
+                                    <div className="card text-color p-2 px-3 h-100 ">
                                         <div className='text-color'>
                                             <div className='d-flex justify-content-between align-items-center'>
                                                 <p className='m-0'><b>Name</b></p>
@@ -158,28 +151,11 @@ const Category = () => {
                                     </div>
                                 </div>
                             ))}
-
                         </div>
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
                     {isLoading && <HelpAndSupportListLoader />}
-
                 </div>
             </div>
-
-
         </>
     )
 }

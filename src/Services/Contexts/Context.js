@@ -1,6 +1,9 @@
 export const authToken = localStorage.getItem("token");
 
-export const baseApi = 'https://lfapi.marwadtech.com/api/v1';
+// const apiLink = `https://f1hz33hh-5000.inc1.devtunnels.ms/api/v1/auth/login`;
+// export const baseApi = 'https://lfapi.marwadtech.com/api/v1';
+export const baseApi = 'https://f1hz33hh-5000.inc1.devtunnels.ms/api/v1';
+// export const baseApi = 'https://f1hz33hh-5000.inc1.devtunnels.ms/api/v1';
 
 
 // Auth
@@ -14,7 +17,7 @@ export const HeadersLoginApi = {
 export const userApi = `${baseApi}/users`;
 
 // ratings
-export const appRatingsApi = `${baseApi}/ratings/app`;
+export const appRatingsApi = `${baseApi}/reviews`;
 
 // commondataapi
 export const commonDataApi = `${baseApi}/commondata`
@@ -23,7 +26,7 @@ export const commonDataApi = `${baseApi}/commondata`
 export const categoryApi = `${baseApi}/category`
 
 // level
-export const levelApi = `${baseApi}/level`
+export const levelApi = `${baseApi}/levels`
 
 // image api
 export const imagesApi = `${baseApi}/images`;
@@ -32,7 +35,7 @@ export const imagesApi = `${baseApi}/images`;
 export const notificationsApi = `${baseApi}/notifications`;
 
 // HelpAndSupport
-export const suggestionsApi = `${baseApi}/suggestions`;
+export const queriesApi = `${baseApi}/queries`;
 
 // reports
 export const reportsApi = `${baseApi}/reports`;

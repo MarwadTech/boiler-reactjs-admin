@@ -24,11 +24,13 @@ import Category from '../Pages/Category'
 const Adminindex = () => {
     return (
         <>
+            {/* Display OfflineOnlineAlert component */}
             <OfflineOnlineAlert />
             <BrowserRouter>
                 <Routes>
+                    {/* Routes for authenticated users */}
                     <Route path='/login' element={<Login />} />
-                    {authToken ?
+                    {authToken ?  // Check if authToken exists
                         <Route path='/' element={<Main />} >
                             <Route path='/' element={<Dashboard />} />
                             <Route path='/user' element={<User />} />
@@ -44,9 +46,11 @@ const Adminindex = () => {
                             <Route path='*' element={<Error />} />
                         </Route>
                         :
-                        <Route path='*' element={<Login />} />
+                        <Route path='*' element={<Login />} /> // Route for non-authenticated users (redirect to Login)
                     }
+                    {/* Default route for non-authenticated users (redirect to Login) */}
                     <Route path='*' element={<Login />} />
+                    {/* Routes for privacy policy and terms and conditions */}
                     <Route path='/privacy-policy' element={<PrivacyPolicy />} />
                     <Route path='/terms-and-condition' element={<TermsAndConditions />} />
                 </Routes>

@@ -8,24 +8,28 @@ const Header = () => {
     const [logoutmodalshow, setLogoutModalShow] = useState(false);
     return (
         <>
+            {/* Navigation bar */}
             <nav className='navbar custom-background text-white bg-color' style={{ height: '60px' }}>
                 <div className={`container-fluid `}>
                     <div className='d-flex gap-2 '>
                         <img src={logo} alt="local Finds" className='rounded' width={40} height={40} />
                         <h5 className={`mt-2 `} ><b>Boiler Plate</b></h5>
                     </div>
+                    {/* Buttons */}
                     <div className="d-flex gap-1 ">
                         <button type="button" className={`btn btn-outline-primary-emphasis d-none d-lg-block text-white`} onClick={() => setLogoutModalShow(true)}>
                             <img src={logoutIcon} /><span className='ms-1 '><b>Log Out</b></span>
                         </button>
-
+                        {/* Menu button (visible on small screens) */}
                         <button className='btn btn-link d-lg-none m-0 ps-0' onClick={() => setMenu(!menu)}>
                             {!menu ? <img src={menuIcon} alt="Menu" /> : <img src={closeMenuIcon} alt="Close" />}
                         </button>
                     </div>
                 </div>
             </nav>
+            {/* Render Menu component if menu state is true */}
             {menu && <Menu setMenu={setMenu} />}
+            {/* Render Logout component if logoutmodalshow state is true */}
             {logoutmodalshow && <Logout setLogoutModalShow={setLogoutModalShow} />}
         </>
     )

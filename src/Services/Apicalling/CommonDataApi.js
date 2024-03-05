@@ -1,36 +1,32 @@
 import axios from "axios";
 import { HeadersApi, commonDataApi } from "../Contexts/Context";
-// get
-export const commonDataGetApi = async () => {
 
-    const apiLink = `${commonDataApi}`;
+const sendRequest = async (method, url, data = null) => {
     try {
-        const response = await axios.get(apiLink, { headers: HeadersApi });
+        console.log({ data });
+        const response = await axios({ method, url, data, headers: HeadersApi });
+        console.log({ response });
         return response;
     } catch (error) {
+        console.log({ error });
         return error;
     }
-}
+};
+
+// Get common data
+export const getCommonDataApi = async () => {
+    const apiLink = `${commonDataApi}`;
+    return sendRequest("get", apiLink);
+};
 
 // Add common data
-export const commonDataPostApiWithData = async (data) => {
+export const postCommonDataApi = async (data) => {
     const apiLink = `${commonDataApi}`;
-    try {
-        const response = await axios.post(apiLink, data, { headers: HeadersApi });
-        return response
-    } catch (error) {
-        return error
-    }
-}
-
+    return sendRequest("post", apiLink, data);
+};
 
 // Edit common data
-export const commonDataPatchApiWithData = async (id, data) => {
-    const apiLink = `${commonDataApi}/${id}`;
-    try {
-        const response = await axios.patch(apiLink, data, { headers: HeadersApi });
-        return response
-    } catch (error) {
-        return error
-    }
-}
+export const patchCommonDataApi = async (id, data) => {
+    const apiLink = `${commonDataApi}/${data.key}`;
+    return sendRequest("patch", apiLink, data);
+};

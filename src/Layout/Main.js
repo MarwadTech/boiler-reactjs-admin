@@ -6,10 +6,13 @@ import { Outlet } from 'react-router-dom'
 const Main = () => {
     return (
         <div>
+            {/* Render Header component */}
             <Header />
+            {/* Render Sidebar component */}
             <Sidebar />
-            {/* <div className={`rounded border overflow-auto p-1 px-3 me-1 mt-1 text-color`} style={{ height: 'calc(100vh - 70px)' }}> */}
+            {/* Content area */}
             <div className={`p-1 text-color`} style={{ height: 'calc(100vh - 62px)' }}>
+                {/* Render content of nested routes */}
                 <Outlet />
             </div>
         </div>

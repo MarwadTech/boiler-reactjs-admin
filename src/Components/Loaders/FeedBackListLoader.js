@@ -6,7 +6,7 @@ export const FeedBackListLoader = () => {
                 <div className="row m-sm-1 row-cols-1 row-cols-sm-1 row-cols-md-2  row-cols-xl-3" >
                     {Array.from({ length: 6 }).map(() => (
                         <div className="col rounded p-1  " >
-                            <div className="card color p-2 h-100">
+                            <div className="card text-color p-2 h-100">
                                 <div className="">
                                     <div className="  d-flex align-items-center">
                                         <img className="card-img-top placeholder rounded float-start" style={{

@@ -1,39 +1,29 @@
 import axios from "axios";
 import { HeadersApi, userApi } from "../Contexts/Context";
 
+const sendRequest = async (method, url, data = null) => {
+    try {
+        const response = await axios({ method, url, data, headers: HeadersApi });
+        return response; // Return response data instead of entire response
+    } catch (error) {
+        throw error; // Throw the error to be caught by the caller
+    }
+};
 
 // get
-export const userGetApiWithPage = async (page) => {
-    // const apiLink = `${userapi}?page=${page}&sort=full_name`;
+export const getUserApiWithPage = async (page) => {
     const apiLink = `${userApi}?page=${page}&limit=12`;
-    try {
-        const response = await axios.get(apiLink, { headers: HeadersApi });
-        return response;
-
-    } catch (error) {
-        return error
-    }
+    return sendRequest("get", apiLink);
 };
 
-
-export const userGetApiWithId = async (id) => {
-    const apiLink = ` ${userApi}/${id}`;
-    try {
-        const response = await axios.get(apiLink, { headers: HeadersApi });
-        return response;
-    } catch (error) {
-        return error
-    }
-};
-
-
-// User update API using user ID
-export const userPutApiWithIdDate = async (id, data) => {
+// get with id
+export const getUserApiWithId = async (id) => {
     const apiLink = `${userApi}/${id}`;
-    try {
-        const response = await axios.put(apiLink, data, { headers: HeadersApi });
-        return response
-    } catch (error) {
-        return error
-    }
-}
+    return sendRequest("get", apiLink);
+};
+
+// edit
+export const putUserApi = async (id, data) => {
+    const apiLink = `${userApi}/${id}`;
+    return sendRequest("put", apiLink, data);
+};

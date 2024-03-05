@@ -1,37 +1,31 @@
 import axios from "axios";
 import { HeadersApi, categoryApi } from "../Contexts/Context";
-// get
-export const categoryGetApi = async () => {
 
-    const apiLink = `${categoryApi}`;
+
+const sendRequest = async (method, url, data = null) => {
     try {
-        const response = await axios.get(apiLink, { headers: HeadersApi });
+        const response = await axios({ method, url, data, headers: HeadersApi });
         return response;
     } catch (error) {
         return error;
     }
-}
+};
 
-// Add category
-export const categoryPostApiWithData = async (data) => {
+// Get category data
+export const getCategoryApi = async () => {
     const apiLink = `${categoryApi}`;
-    try {
-        const response = await axios.post(apiLink, data, { headers: HeadersApi });
-        return response
-    } catch (error) {
-        return error
-    }
-}
+    return sendRequest("get", apiLink);
+};
 
+// Add category data 
+export const postCategoryApi = async (data) => {
+    const apiLink = `${categoryApi}`;
+    return sendRequest("post", apiLink, data);
+};
 
-// Edit category
-export const categoryPatchApiWithData = async (id, data) => {
+// Edit category data
+export const patchCategoryApi = async (id, data) => {
     const apiLink = `${categoryApi}/${id}`;
-    try {
-        const response = await axios.patch(apiLink, data, { headers: HeadersApi });
-        return response
-    } catch (error) {
-        return error
-    }
-}
+    return sendRequest("patch", apiLink, data);
+};
 

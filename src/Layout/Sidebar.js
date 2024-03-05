@@ -3,8 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { categoryIcon, colorCode, commonDataIcon, dashboardIcon, feedbackIcon, heplAndSupportIcon, levelIcon, logo, logoutIcon, notificationIcon, privacyPolicyIcon, reportIcon, templateIcon, termAndConditionIcon, userIcon } from '../Assets/Index';
 import Logout from '../Dialogs/Logout';
 
-
-
+// Array of menu items with their respective paths, icons, and titles
 const menuItems = [
     { to: "/", icon: dashboardIcon, title: "Dashboard" },
     { to: "/user", icon: userIcon, title: "User" },
@@ -20,7 +19,10 @@ const menuItems = [
     { to: "/terms-and-condition", icon: termAndConditionIcon, title: "Terms & Condition" }
 ];
 
+// Sidebar component
 const Sidebar = () => {
+
+    // MenuItem component to render individual menu items  
     const MenuItem = ({ to, icon, title }) => (
         <li className="nav-item">
             <NavLink className={`nav-link`}
@@ -46,10 +48,11 @@ const Sidebar = () => {
 
 export default Sidebar
 
-
+// Menu component for mobile view
 export const Menu = ({ setMenu }) => {
     const [logoutmodalshow, setLogoutModalShow] = useState(false)
 
+    // MenuItem component to render individual menu items
     const MenuItem = ({ to, icon, title, setMenu }) => (
         <div className="m-2">
             <NavLink className={`nav-link p-2`} style={{ color: colorCode }} to={to} onClick={setMenu} >
@@ -64,17 +67,21 @@ export const Menu = ({ setMenu }) => {
             <style> {`::-webkit-scrollbar {Width: 0px}`}</style>
             <div className={`p-4 pt-3 overflow-auto  position-fixed top-0 start-0 border-color mb-1 bg-white border-color rounded-end-4 h-100`} style={{ zIndex: 6, }}>
                 <div className={`text-center `}>
-                    <img src={logo} style={{ width: '80px', aspectRatio: '1 / 1' }} className='rounded ' />
+                    <img src={logo} alt='logo' style={{ width: '80px', aspectRatio: '1 / 1' }} className='rounded ' />
                 </div>
+
+                {/* Render each menu item */}
                 {menuItems.map((menuItem, index) => (
                     <MenuItem key={index} to={menuItem.to} icon={menuItem.icon} title={menuItem.title} setMenu={() => setMenu()} />
                 ))}
+                {/* Logout button */}
                 <div className=" m-2 mt-3">
                     <button className='buttons p-2 w-100 text-start' onClick={() => setLogoutModalShow(true)}>
                         <img src={logoutIcon} alt="icon." className='me-2' />
                         <span>Log Out</span>
                     </button>
                 </div>
+                {/* Render Logout component if logoutmodalshow state is true */}
                 {logoutmodalshow && <Logout setLogoutModalShow={setLogoutModalShow} />}
             </div>
         </div>

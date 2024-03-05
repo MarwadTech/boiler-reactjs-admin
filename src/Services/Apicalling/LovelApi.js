@@ -1,37 +1,37 @@
 import axios from "axios";
 import { HeadersApi, levelApi } from "../Contexts/Context";
-// get
-export const lecelGetApi = async () => {
+import { logDOM } from "@testing-library/react";
 
-    const apiLink = `${levelApi}`;
+const sendRequest = async (method, url, data = null) => {
     try {
-        const response = await axios.get(apiLink, { headers: HeadersApi });
+
+        // console.log({ url, data });
+
+        const response = await axios({ method, url, data, headers: HeadersApi });
+        console.log({ response });
         return response;
     } catch (error) {
+        console.log({ error });
         return error;
     }
-}
+};
 
-
-// Add  
-export const lecelPostApiWithData = async (data) => {
+// Get level data
+export const getLevelApi = async () => {
     const apiLink = `${levelApi}`;
-    try {
-        const response = await axios.post(apiLink, data, { headers: HeadersApi });
-        return response
-    } catch (error) {
-        return error
-    }
-}
+    return sendRequest("get", apiLink);
+};
 
+// Add level data
+export const postLovelApi = async (data) => {
+    const apiLink = `${levelApi}`;
+    return sendRequest("post", apiLink, data);
+};
 
-// Edit 
-export const lecelPatchApiWithData = async (id, data) => {
+// Edit level data
+export const patchLevelApi = async (id, data) => {
+
     const apiLink = `${levelApi}/${id}`;
-    try {
-        const response = await axios.patch(apiLink, data, { headers: HeadersApi });
-        return response
-    } catch (error) {
-        return error
-    }
-}
+    console.log({ data });
+    return sendRequest("patch", apiLink, data);
+};
