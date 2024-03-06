@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { callIcon, eyeHideIcon, eyeShowIcon, logo, mailIcon, passwordIcon } from '../Assets/Index'
+import { callIcon, colorCode, eyeHideIcon, eyeShowIcon, logo, mailIcon, passwordIcon } from '../Assets/Index'
 import { useNavigate } from 'react-router-dom';
 import { loginPostApi } from '../Services/Apicalling/AuthApi';
 import TorshMessage from '../Components/TorshMessage';
+import OTPInput from 'react-otp-input';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -11,6 +12,7 @@ const Login = () => {
     const [error, setError] = useState();
     const [logintoken, setLogintoken] = useState(false)
     const [torsh, setTorsh] = useState(false)
+    const [otp, setOtp] = useState('')
     const [loginData, setLoginData] = useState({});
 
     // Function to handle input change
@@ -22,6 +24,21 @@ const Login = () => {
         setLoginData((prevState) => ({ ...prevState, [name]: value.trim() }));
 
     };
+
+    // const [loginData, setLoginData] = useState({
+    //     otp: otp,
+    // });
+    // useEffect(() => {
+    //     setLoginData((prevData) => ({
+    //         ...prevData,
+    //         otp: otp,
+    //     }));
+    // }, [otp]);
+    // const addOtp = (e) => {
+    //     setError('')
+    //     setMessage('')
+    //     setOtp(e)
+    // }
 
     // Function to toggle password visibility
     const showHide = () => {
@@ -44,7 +61,7 @@ const Login = () => {
 
     // Function to validate form inputs and submit login request
     const validateAndSubmit = async () => {
-        // console.log(loginData);
+        console.log(loginData);
         try {
             const postapi = await loginPostApi(loginData);
             if (postapi.status === 200) {
@@ -97,18 +114,22 @@ const Login = () => {
         if (loginData.phone_number.length !== 10) {
             setError('phone_number');
             setMessage('Please Enter 10 digit phone number');
-        } else
-            if (!loginData.password) {
-                setError('password');
-                setMessage('Please Enter password');
-            }
-            else if (loginData.password.length < 8) {
-                setError('password');
-                setMessage('Please Enter minimam 8 digit password');
-            }
-            else {
-                validateAndSubmit();
-            }
+        }
+        // else if (!loginData.otp || loginData.otp.length < 6) {
+        //     setError('otp');
+        //     setMessage('Please Enter otp');
+        // }
+        else if (!loginData.password) {
+            setError('password');
+            setMessage('Please Enter password');
+        }
+        else if (loginData.password.length < 8) {
+            setError('password');
+            setMessage('Please Enter minimam 8 digit password');
+        }
+        else {
+            validateAndSubmit();
+        }
     };
 
     // 9887381847
@@ -174,6 +195,36 @@ const Login = () => {
                                     <a className='color cursor-pointer' onClick={showHide}>{showPassword ? <img src={eyeHideIcon} alt="hide" /> : <img src={eyeShowIcon} alt="show" />}</a>
                                 </span>
                             </div>
+                            {/* 
+                            <div className=''>
+                                <label htmlFor='otp' classname="form-label">OTP</label>
+                                <OTPInput
+                                    value={otp}
+                                    onChange={addOtp}
+                                    numInputs={6}
+                                    renderSeparator={<span></span>}
+                                    renderInput={(props) => <input {...props} />}
+                                    inputStyle={{
+                                        width: "30px",
+                                        marginInline: "auto",
+                                        border: "none",
+                                        borderBottom: `1.5px solid ${error === "otp" ? "red" : colorCode}`, // Fixed syntax
+                                        outline: "none",
+                                        color: colorCode
+                                    }}
+                                    onFocus={() => setOtp('')}
+                                />
+                            </div> */}
+
+
+
+
+
+
+
+
+
+
                             {/* <p className={`${error ? 'text-danger' : 'text-success'}`}>{message}</p> */}
                         </div>
                         {/* Submit button */}
